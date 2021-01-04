@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <title>Company - Collaboration</title>
+        <link rel="stylesheet" href="../../style/editor.css">
+        <link rel="stylesheet" href="../../style/elements.css">
+        <link rel="stylesheet" href="../../style/menu.css">
+        <link rel="stylesheet" href="../../style/listing_table.css">
+        
+        <!--Model scripts-->
+        <script src="../../model/object/department.js"></script>
+        <script src="../../model/object/listing_table.js"></script>
+        <script src="../../model/object/message.js"></script>
+        <script src="../../model/object/user.js"></script>
+        <script src="../../model/data/constants.js"></script>               <!--The file holds the descriptions that appear in the textarea element with the id helpbox, which updates when the user hovers over an element-->
+        <script src="../../model/data/users.js"></script>
+        <script src="../../model/data/departments.js"></script>
+        <script src="../../model/data/messages.js"></script>
+        <script src="../../subapplications/project_management/model/object/project.js"></script>
+        <script src="../../subapplications/project_management/model/data/projects.js"></script>
+        <!--Controller scripts-->
+        <script src="../../controller/generator/helpbox.js"></script>
+        <script src="../../controller/generator/list.js"></script>
+        <script src="../../controller/generator/listing.js"></script>
+        <script src="../../controller/generator/navigation.js"></script>
+        <script src="../../controller/generator/select.js"></script>
+        <script src="../../controller/object/message.js"></script>             <!--This file holds the initializeUserTable() function, which passes constants from the constants.js file to a property of the returned object-->
+        <script src="../../controller/validation_check.js"></script>
+
+        <!--Master module-->
+        <script src="../../app.js"></script>
+    </head>
+
+    <body onload="initializeMessageList();">
+        <div style="float: right;">
+            <textarea id="helpbox"></textarea>
+        </div>
+
+        <div class="MenuColumn" id="MessageListingMenu">
+            <div    id="MessageListingNew"  ></div>            
+            <div    id="MessageTableFilter" ></div>
+        </div>
+        
+        <main class="Editor">
+            <hgroup>
+                <h1>Company</h1>
+                <h2>Collaboration</h2>
+                <h3>Message Listing</h3>
+            </hgroup>
+
+                <!--The message board will allow for messages if various classifications such as progress reports, questions, setbacks, revisions, and notes-->
+                <input id="MessageListingTableSearch" type="search" placeholder="Search messages...">
+                <span id="MessageListingCount">The are currently no messages</span>
+                <table class="ListingTable" id="MessageListingTable"></table>      <!--Begin Message Table element-->
+
+            <button id="MessageListingNewRecord">Submit Quickset New Message</button>
+        </main>                                                                  <!--  createNewRecord();  End main element-->
+
+        <footer>
+            <h1>Known Problems</h1>
+            <ul>
+                <li>The Stages list shows only the projects. The plan is to use the optgroup feature to group the stages by project in the listbox</li>
+                <li>When a new message is created, if Subject is left blank, there is no "(No subject entered)" label posted in the subject field. This has something to do with the generateRowElement() function.</li>
+            </ul>
+        </footer>
+        <script>
+            function initializeMessageList()
+            {
+                let listingContents = {idPrefix: "Message", focusedID: "MessageMessageFooter", navigation: rootNavigationObject, editor: "../editor/message.html"};
+                let listingTable    = new ListingTable("Message", initializeMessageTable("MessageListing"), "../viewer/message.html");
+
+                generateListingPage(listingContents, listingTable);
+            }
+        </script>
+    </body>
+</html>

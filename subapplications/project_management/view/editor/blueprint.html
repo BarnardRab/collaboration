@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Company Project Management - Blueprint Editor</title>
+
+        <link rel="stylesheet" href="../../../../style/editor.css">
+        <link rel="stylesheet" href="../../../../style/elements.css">
+        <link rel="stylesheet" href="../../../../style/graphics.css">
+        <link rel="stylesheet" href="../../../../style/menu.css">
+        
+        <!--Model scripts-->
+        <!--Controller scripts-->
+        <!--Master module-->
+    </head>
+    <body onload="initializaeBlueprintEditor();">
+        <section class="MenuColumn" id="EditorMenu"></section>                        <!--The panel on the left of the window featuring the Section Directory, Actions and Management Directory-->
+
+        <hgroup>
+            <h1>Company Project Management</h1>
+            <h2>Blueprint Editor</h2>    
+        </hgroup>
+
+    <!--	Main menu, featuring Create, Transform and Effectsd	-->
+    <main>
+        <form id="EditorForm">
+        <ul id="editorMenu" class="menuRow">					<!--The Main menu of the editor-->
+            <li onmouseover="displayObjectMenu('Create Menu')">Create</li>
+            <li onmouseover="displayObjectMenu('Transform Menu')">Transform</li>
+            <li onmouseover="displayObjectMenu('Effects Menu')">Effects</li>
+        </ul>
+
+        <section class="GraphicsSubmenu" id="EditorSubmenus">
+            <fieldset id="Create Menu" style="display: none;">
+                <legend>Create Menu</legend>
+                <ul class="EditorSubmenu">
+                    <li onclick="toggleToolPanel('CreateText')">Text</li>
+                    <li onclick="toggleToolPanel('CreateLine')">Line</li>
+                    <li onclick="toggleToolPanel('CreateRectangle')">Rectangle</li>
+                    <li onclick="toggleToolPanel('CreateArc')">Arc</li>
+                    <li onclick="toggleToolPanel('CreateArcTo')">Arc To</li>
+                    <li onclick="toggleToolPanel('CreateQuadraticBezier')">Quadratic Bezier</li>
+                    <li onclick="toggleToolPanel('CreateCubicBezier')">Cubic Bezier</li>
+                </ul>
+            </fieldset>
+
+            <fieldset id="Transform Menu" style="display: none;">
+                <legend>Transform Menu</legend>
+                <ul class="EditorSubmenu">
+                    <li onclick="toggleToolPanel('TransformMove')">Move</li>
+                    <li onclick="toggleToolPanel('TransformRotate')">Rotate</li>
+                    <li onclick="toggleToolPanel('TransformScale')">Scale</li>
+                </ul>
+            </fieldset>
+
+            <fieldset id="Effects Menu" style="display: none;">
+                <legend>Effects Menu</legend>
+                <ul class="EditorSubmenu">
+                    <li onclick="toggleToolPanel('EffectsColor')">Color</li>
+                    <li onclick="toggleToolPanel('EffectsTransparency')">Transparency</li>
+                </ul>
+            </fieldset>
+
+        </section>
+
+        <svg id="objectEditorSVG" width=1000 height=500 viewBox="0 0 1000 500" style="display: inline-block; background-color:cadetblue;">
+            The editor is unavailable because your browser does not support scalable vector graphics
+        </svg>
+
+        <!--The Sub menus that appear when each main menu of the editor is hovered-->
+        <section id="editorContent">
+            <!-- Create Menu Tools-->
+            <fieldset class="GraphicsTool" id="CreateText" style="display: none;" onclick="activateTool('CreateText');">
+                <legend>Create - Text</legend>
+                <table>
+                    <tr><td><label for="CreateTextX">X</label>              </td><td><input id="CreateTextX" type="number" value="20"></td></tr>
+                    <tr><td><label for="CreateTextY">Y</label>              </td><td><input id="CreateTextY" type="number" value="20"></td></tr>
+                    <tr><td><label for="CreateTextFont">Font</label>        </td><td><input id="CreateTextFont" type="text" value="Sans-Serif"></td></tr>
+                    <tr><td><label for="CreateTextSize">Font Size</label>   </td><td><input id="CreateTextSize" type="number" value="12"></td></tr>
+                    <tr><td><label for="CreateTextBaseline">Baseline</label></td><td><select id="CreateTextBaseline"><option value="alphabetic">alphabetic</option><option value="bottom">bottom</option><option value="hanging">hanging</option><option value="ideographic">ideographic</option><option value="middle">middle</option><option value="top">top</option></select></td></tr>
+                    <tr><td><label for="CreateTextText">Text</label>        </td><td><input id="CreateTextText" type="text"></td></tr>
+                </table>
+            </fieldset>
+
+        <fieldset class="GraphicsTool" id="CreateLine" style="display: none;" onclick="activateTool('CreateLine');">
+            <legend>Create - Line</legend>
+            <table>
+                <tr><td><label for="CreateLineXStart">X Start</label>       </td><td><input id="CreateLineXStart" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateLineYStart">Y Start</label>       </td><td><input id="CreateLineYStart" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateLineXEnd">X End</label>           </td><td><input id="CreateLineXEnd" type="number" value="100"></td></tr>
+                <tr><td><label for="CreateLineYEnd">Y End</label>           </td><td><input id="CreateLineYEnd" type="number" value="100"></td></tr>
+                <tr><td><label for="CreateLineWidth">Width</label>          </td><td><input id="CreateLineWidth" type="number" value="10"></td></tr>
+                <tr><td><label for="CreateLineCaps">Caps</label>            </td><td><select id="CreateLineCaps"><option value="Butt">Butt</option><option value="Round">Round</option><option value="Square">Square</option></select></td></tr>
+                <tr><td><label for="CreateLineJoin">Join</label>            </td><td><select id="CreateLineJoin"><option value="Miter">Miter</option><option value="Bevel">Bevel</option><option value="Round">Round</option></select></td></tr>
+                <tr><td><label for="CreateLineClosePath">Close Path</label> </td><td><input id="CreateLineClosePath" type="checkbox"></td></tr>
+                <tr><td><label for="CreateLineSegments">Segments</label>    </td><td><select id="CreateLineSegments" multiple></select></td></tr>
+            </table>
+        </fieldset>
+                
+        <fieldset class="GraphicsTool" id="CreateRectangle" style="display: none;" onclick="activateTool('CreateRectangle');">
+            <legend>Create - Rectangle</legend>
+            <table>
+                <tr><td><label for="CreateRectangleX">X</label>             </td><td><input id="CreateRectangleX" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateRectangleY">Y</label>             </td><td><input id="CreateRectangleY" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateRectangleWidth">Width</label>     </td><td><input id="CreateRectangleWidth" type="number" value="400"></td></tr>
+                <tr><td><label for="CreateRectangleHeight">Height</label>   </td><td><input id="CreateRectangleHeight" type="number" value="400"></td></tr>
+                <tr><td><label for="CreateRectangleFill">Fill</label>       </td><td><input id="CreateRectangleFill" type="checkbox"></td></tr>
+            </table>
+        </fieldset>
+                
+        <fieldset class="GraphicsTool" id="CreateArc" style="display: none;" onclick="activateTool('CreateArc');">
+            <legend>Create - Arc</legend>
+            <table>
+                <tr><td><label for="CreateArcX">X</label>                   </td><td><input id="CreateArcX" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateArcY">Y</label>                   </td><td><input id="CreateArcY" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateArcRadius">Radius</label>         </td><td><input id="CreateArcRadius" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateArcClockwise">Clockwise</label>   </td><td><input id="CreateArcClockwise" type="checkbox"></td></tr>
+            </table>
+        </fieldset>
+                
+        <fieldset class="GraphicsTool" id="CreateArcTo" style="display: none;" onclick="activateTool('CreateArcTo');">
+            <legend>Create - Arc To</legend>
+            <table>
+                <tr><td><label for="CreateArcToX1">X1</label>               </td><td><input id="CreateArcToX1" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateArcToY1">Y1</label>               </td><td><input id="CreateArcToY1" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateArcToX2">X2</label>               </td><td><input id="CreateArcX" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateArcToY2">Y2</label>               </td><td><input id="CreateArcY" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateArcToRadius">Radius</label>       </td><td><input id="CreateArcRadius" type="number" value="20"></td></tr>
+            </table>
+        </fieldset>
+                
+        <fieldset class="GraphicsTool" id="CreateQuadraticBezier" style="display: none;" onclick="activateTool('CreateQuadraticBezier');">
+            <legend>Create - Quadratic Bezier</legend>
+            <table>
+                <tr><td><label for="CreateQuadraticBezierControlX">Control Point X</label> </td><td><input id="CreateQuadraticBezierControlX" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateQuadraticBezierControlY">Control Point Y</label> </td><td><input id="CreateQuadraticBezierControlY" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateQuadraticBezierPositionX">Position X</label></td><td><input id="CreateQuadraticBezierPositionX" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateQuadraticBezierPositionY">Position Y</label></td><td><input id="CreateQuadraticBezierPositionY" type="number" value="20"></td></tr>
+            </table>
+        </fieldset>
+                
+        <fieldset class="GraphicsTool" id="CreateCubicBezier" style="display: none;" onclick="activateTool('CreateCubicBezier');">
+            <legend>Create - Cubic Bezier</legend>
+            <table>
+                <tr><td><label for="CreateCubicBezierControlX1">Control Point X1</label> </td><td><input id="CreateCubicBezierControlX1" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateCubicBezierControlY1">Control Point Y1</label> </td><td><input id="CreateCubicBezierControlY1" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateCubicBezierControlX2">Control Point X2</label> </td><td><input id="CreateCubicBezierControlX2" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateCubicBezierControlY2">Control Point Y2</label> </td><td><input id="CreateCubicBezierControlY2" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateCubicBezierPositionX">Position X</label></td><td><input id="CreateCubicBezierPositionX" type="number" value="20"></td></tr>
+                <tr><td><label for="CreateCubicBezierPositionY">Position Y</label></td><td><input id="CreateCubicBezierPositionY" type="number" value="20"></td></tr>
+            </table>
+        </fieldset>
+
+        <!-- Transform Menu Tools-->
+        <fieldset class="GraphicsTool" id="TransformMove" style="display: none;" onclick="activateTool('TransformMove');">
+            <legend>Transform - Move</legend>
+            <table>
+                <tr><td><label for="TransformX">X</label> </td><td><input id="TransformX" type="number" value="20"></td></tr>
+                <tr><td><label for="TransformY">Y</label> </td><td><input id="TransformY" type="number" value="20"></td></tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="GraphicsTool" id="TransformRotate" style="display: none;" onclick="activateTool('TransformRotate');">
+            <legend>Transform - Rotate</legend>
+            <table>
+                <tr><td><label for="TransformRotateRadius">Radius</label> </td><td><input id="TransformRotateRadius" type="number" value="20"></td></tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="GraphicsTool" id="TransformScale" style="display: none;" onclick="activateTool('TransformScale');">
+            <legend>Transform - Scale</legend>
+            <table>
+                <tr><td><label for="TransformScaleX">X</label>                  </td><td><input id="TransformScaleX" type="number" value="20"></td></tr>
+                <tr><td><label for="TransformScaleY">Y</label>                  </td><td><input id="TransformScaleY" type="number" value="20"></td></tr>
+                <tr><td><label for="TransformScaleEvenly">Scale Evenly</label>  </td><td><input id="TransformScaleEvenly" type="checkbox"></td></tr>
+            </table>
+        </fieldset>
+
+        <!-- Effects Menu Tools-->
+        <fieldset class="GraphicsTool" id="EffectsColor" style="display: none;" onclick="activateTool('EffectsColor');">
+            <legend>Effects - Color</legend>
+            <table>
+                <tr><td><label for="EffectsColorStroke">Stroke Color</label>    </td><td><input id="EffectsColorStroke" type="color"></td></tr>
+                <tr><td><label for="EffectsColorFillColor">Fill Color</label>   </td><td><input id="EffectsColorFillColor" type="color" value="#FFFFFF"></td></tr>
+                <tr><td><label for="EffectsColorFill">Fill</label>              </td><td><input id="EffectsColorFill" type="checkbox"></td></tr>
+            </table>
+        </fieldset>
+                
+        <fieldset class="GraphicsTool" id="EffectsTransparency" style="display: none;" onclick="activateTool('EffectsTransparency');">
+            <legend>Effects - Transparency</legend>
+            <table>
+                <tr><td><label for="EffectsTransparencyGlobalAlpha">Global Alpha</label>                </td><td><input id="EffectsTransparencyGlobalAlpha" type="number" value="1.0"></td></tr>
+                <tr><td><label for="EffectsTransparencyGlobalCO">Global Composite Operation</label>     </td><td><select id="EffectsTransparencyGlobalCO" value="source-over">
+                    <option value="copy">Copy</option><option value="destination-atop">Destination Atop</option><option value="destination-in">Destination In</option><option value="destination-out">Destination Out</option><option value="destination-over">Destination Over</option><option value="lighter">Lighter</option><option value="source-atop">Source Atop</option><option value="source-in">Source In</option><option value="source-out">Source Out</option><option value="source-over">Source Over</option><option value="xor">Exclusively Or</option></select></td></tr>
+            </table>
+        </fieldset>
+    </section>
+
+  
+    <section id="ObjectWorkSpaceFooter" class="SVGAttributes">
+        <table>
+            <caption>SVG Dimensions</caption>
+            <tr><td>Width</td><td><input type="number" id="ObjectSVGWidth" value="1500"></td></tr>
+            <tr><td>Height</td><td><input type="number" id="ObjectSVGHeight" value="900"></td></tr>
+        </table>
+                    
+        <table>
+            <caption>SVG View Box</caption>
+            <tr><td>Horizontal Pan</td><td><input type="number" id="ObjectSVGHorizontalPan" value="0"></td></tr>
+            <tr><td>Vertical Pan</td><td><input type="number" id="ObjectSVGVerticalPan" value="0"></td></tr>
+            <tr><td>Zoom Width</td><td><input type="number" id="ObjectSVGZoomWidth" value="1500"></td></tr>
+            <tr><td>Zoom Height</td><td><input type="number" id="ObjectSVGZoomHeight" value="900"></td></tr>
+        </table>
+
+        <table>
+            <caption>Blueprint</caption>
+            <tr><td>Name		</td><td><input     id="BlueprintName"			value="New Blueprint"></td></tr>
+            <tr><td>Description </td><td><textarea  id="BlueprintDescription"   rows="4"></textarea></td></tr>
+            <tr><td>Active Tool </td><td><input     id="ActiveTool"             value="none" disabled></td></tr>
+        </table>
+
+        <table>
+            <caption>Current Object</caption>
+            <tr><td>Active Object   </td><td><input     id="ObjectName"			value="New Object"></td></tr>
+            <tr><td>Description     </td><td><textarea  id="ObjectDescription"  rows="5"></textarea></td></tr>
+        </table>
+
+        <table>
+            <caption>Objects</caption>
+            <tr><td>List            </td><td><select    id="ObjectList"			size="7" multiple></select></td></tr>
+        </table>
+
+    </section>
+    </form>
+    </main>
+
+
+
+
+    <!--	Tool scripts	-->
+    <script src="../../controller/generators/menus/tools/create/line.js"></script>	<!--Initializes the Line class-->
+
+<script>
+
+function initializaeBlueprintEditor()
+{
+    /*  //  This is broken
+    initializeEditor('Blueprint',
+                ["Graphics"],
+                ["Width"],
+                [   //  The messages that appear when list items in the Section Directory is hovered over
+                "The map of the project plans"
+                ]);
+    */
+}
+
+var activeTool = "CreateLine";
+
+
+function activateTool(tool)
+{
+    let status = document.getElementById("ActiveTool");
+    activeTool = tool;
+    console.log("ActivateTool(tool) method executed")
+
+    switch(tool)
+    {
+        case "CreateText"	        : status.value = tool; break;
+        case "CreateLine"	        : status.value = tool; break;
+        case "CreateRectangle"	    : status.value = tool; break;
+        case "CreateArc"	        : status.value = tool; break;
+        case "CreateArcTo"	        : status.value = tool; break;
+        case "CreateQuadraticBezier": status.value = tool; break;
+        case "CreateCubicBezier"	: status.value = tool; break;
+        case "TransformMove"	    : status.value = tool; break;
+        case "TransformRotate"	    : status.value = tool; break;
+        case "TransformScale"	    : status.value = tool; break;
+        case "EffectsColor"         : status.value = tool; break;
+        case "EffectsTransparency"  : status.value = tool; break;
+        default				        : throw `Tool, ${tool} not valid`;
+
+        console.log(`Tool, ${tool}, activated`);
+        
+    }
+}
+
+/**	Make the fieldset element representing the specified toolset visible*/
+function displayObjectMenu(menuName)
+{
+    let menus = [];
+
+    menus.push(document.getElementById("Create Menu"));
+    menus.push(document.getElementById("Transform Menu"));
+    menus.push(document.getElementById("Effects Menu"));
+
+    for (let index = 0; index < menus.length; index++)						//	Make sure all the toolsets are invisible before making the highlighted one visible
+        menus[index].setAttribute("style", "display: none;");
+
+    let activeMenu = document.getElementById(menuName);
+    
+    if (activeMenu == null)	throw `Element with id "${menuName}" does not exist. This error was caught by the displayObjectMenu(menuName) method.`;
+    else					activeMenu.setAttribute("style", "display:inline-block;");
+}
+
+function toggleToolPanel(id)
+{
+    let panel = document.getElementById(id);
+    if (panel == null)
+        throw `There is no tool panel with the ID ${id}`;
+
+    if (panel.hasAttribute("style"))    {panel.removeAttribute("style");    activateTool(id);}
+    else                                panel.setAttribute("style", "display:none;");
+}
+
+</script>
+
+
+
+
+
+</body>
+</html>

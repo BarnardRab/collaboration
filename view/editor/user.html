@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Company Project Management - User Editor</title>
+
+        <link rel="stylesheet" href="../../style/editor.css">
+        <link rel="stylesheet" href="../../style/elements.css">
+        <link rel="stylesheet" href="../../style/menu.css">
+        <link rel="stylesheet" href="../../style/listing_table.css">
+
+        <!--Model scripts-->
+        <script src="../../model/object/department.js"></script>
+        <script src="../../model/object/user.js"></script>
+
+        <script src="../../model/data/constants.js"></script>
+        <script src="../../model/data/users.js"></script>
+
+        <script src="../../model/editor/user.js"></script>
+
+        <!--Controller scripts-->
+        <script src="../../controller/generator/editor.js"></script>
+        <script src="../../controller/generator/helpbox.js"></script>
+        <script src="../../controller/generator/list.js"></script>
+        <script src="../../controller/generator/navigation.js"></script>
+        <script src="../../controller/generator/select.js"></script>
+        <script src="../../controller/validation_check.js"></script>
+    </head>
+
+    <body onload="initializeUserEditor();">
+        <section class="MenuColumn" id="EditorMenu"></section>          <!--The panel on the left of the window featuring the Section Directory, Actions and Management Directory-->
+
+        <main class="Editor">                                       <!--The panel on the right of the window featuring the form with the Sections-->
+            <hgroup>
+                <h1>Company Project Management</h1>
+                <h2>User Editor</h2>    
+            </hgroup>
+
+            <form id="EditorForm">
+
+                <section id="EditorGeneral">                            <!--The section element featuring the General Attributes-->
+                    <table>
+                        <caption>General Attributes</caption>
+                        <tbody>
+                            <tr><th>Username    </th>   <td><input id="UserEditorGeneralUsernameID"   type="text"></td>   </tr>
+                            <tr><th>Password    </th>   <td><input id="UserEditorGeneralPasswordID"   type="password"></td></tr>
+                            <tr><th>First Name  </th>   <td><input id="UserEditorGeneralFirstNameID"  type="text"></td></tr>
+                            <tr><th>Last Name   </th>   <td><input id="UserEditorGeneralLastNameID"   type="text"></td></tr>
+                            <tr><th>E-Mail      </th>   <td><input id="UserEditorGeneralEmailID"      type="email"></td></tr>
+                            <tr><th>Phone       </th>   <td><input id="UserEditorGeneralPhoneID"      type="tel"></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            
+                <section id="EditorPictures" style="display: none;">     <!--The section element featuring the Pictures attributes-->
+                    <h2>Main Photo</h2>
+                    <img id="UserEditorPicturesMainID" src="../../assets/no_image.bmp" style="height: 200px; width: 200px;">
+                    <button id="UserEditorPicturesRemoveID">Remove</button>
+                    <h2>Photo List</h2>
+                    <select id="UserEditorPicturesListID" multiple=true size="10"></select>
+                    <button id="UserEditorPicturesDeleteID">Delete</button>
+                    <button id="UserEditorPicturesSetMainID">Make this the main photo</button>
+                    <input type="file" id="UserEditorPicturesUploadID" accept="image/png, image/jpeg"></p>
+                </section>
+
+                <section id="EditorProjectHistory" style="display: none;">     <!--The section element featuring the Project History attributes-->
+                    <table>
+                        <caption>Project History</caption>
+                        <tbody>
+                            <tr><th>Projects Lead           </th>   <td><select id="UserEditorProjectHistoryLeadListID"         multiple size=10></td></tr>
+                            <tr><th>Projects Participated In</th>   <td><select id="UserEditorProjectHistoryParticipatedListID" multiple size=10></td></tr>
+                        </tbody>
+                    </table>
+                    <button id="UserEditorProjectHistoryEditID">Go to Project Page</button>
+                </section>
+
+                <section id="EditorNotificationPreferences" style="display: none;">     <!--The section element featuring the Pictures attributes-->
+                    <table>
+                        <caption onmouseover="document.getElementById('helpbox').value = userEditorMessageNotifications">Notification Preferences</caption>
+                        <thead>
+                            <tr>
+                                <th>Alert</th>
+                                <th>Desktop</th>
+                                <th>Text Message</th>
+                                <th>Email</th>
+                                <th>Check All</th>
+                                <th>Uncheck All</th>
+                            </tr>
+                        </thead>
+                        <tbody id="UserEditorNotificationPreferencesTableID"></tbody>
+                    </table>
+
+                    <button class="navigationButtons" id="UserEditorNotificationPreferencesCheckID" onclick="toggleAllCheckboxes(true)">Check all Notifications</button>
+                    <button class="navigationButtons" id="UserEditorNotificationPreferencesUncheckID" onclick="toggleAllCheckboxes(false)">Uncheck all Notifications</button>
+                </section>
+
+                <section id="EditorStylePreferences" style="display: none;">     <!--The section element featuring the Pictures attributes-->
+                    <table>
+                        <caption onmouseover="document.getElementById('helpbox').value = userEditorMessageStyle;">Style Preferences</caption>
+                        <thead>
+                            <tr>
+                                <th>Element</th>
+                                <th>Style</th>
+                                <th>Value</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="UserEditorStylePreferencesTableID"></tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td><input id="UserEditorStylePreferencesElementID" placeholder="New element..."  type="text"></td>
+                                <td><textarea id="UserEditorStylePreferencesStyleID" placeholder="New styles..."></textarea></td>
+                                <td><textarea id="UserEditorStylePreferencesValuesID" placeholder="New style values..."></textarea></td>
+                                <td><select id="UserEditorStylePreferencesValues2ID" placeholder="New style values..."><option>Element</option><option>Class</option></select></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </section>
+            </form>
+        </main>
+
+    <div style="display: inline-block; position: fixed;">
+        <span class="clickable" id="EditorPreviousButton"   style="display: none;">Previous Section</span>
+        <span class="clickable" id="EditorNextButton"       >Next Section</span></p>
+        <textarea id="helpbox"></textarea>
+    </div>
+    
+
+        <script>
+            var editor      = null;
+            var userEditor  = null;
+
+            function initializeUserEditor()
+            {
+                console.log("configuration before");
+                console.log(rootNavigationObject);
+                initializeEditor(
+                {
+                    moduleName      : "User",
+                    navigation      : rootNavigationObject,
+                    sectionNames    : ["General",                       "Pictures",                 "Project History",                      "Notification Preferences",                 "Style Preferences"],
+                    focusedIDs      : ["UserEditorGeneralUsernameID",   "UserEditorPicturesListID", "UserEditorProjectHistoryLeadListID",   "UserEditorNotificationPreferencesTableID", "UserEditorStylePreferencesElementID"],
+                    descriptions    :
+                    [
+                        "The General section is an overview of the project as a whole.\\n\\nIt contains parameters that are not restricted to any of the Phases or sub-projects such as total due date, total budget, priority and project leader.",
+                        "Pictures are images associated with the user. One of them may be selected as the avatar that appears along messages posted by the user.",
+                        "Project History is a read-only list of the projects the user lead and participated in. This list can be modified in the Project Editor.",
+                        "Notification Preferences determine what events the user should receive notifications and if these alerts should be issued to their email address, phone, or desktop. Desktop notifications appear as a popup on the right side of the desktop.",
+                        "Style Preferences determine the overall look of the pages. Examples consist of font style and size as well as text and background colors"
+                    ]
+                });
+            }
+
+            userEditor = new UserEditor();
+        </script>
+    </body>
+</html>

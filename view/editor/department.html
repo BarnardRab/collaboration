@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Company Project Management - Department Editor</title>
+
+        <link rel="stylesheet" href="../../style/editor.css">
+        <link rel="stylesheet" href="../../style/elements.css">
+        <link rel="stylesheet" href="../../style/menu.css">
+        <link rel="stylesheet" href="../../style/listing_table.css">
+
+        <!--Model scripts-->
+        <script src="../../model/object/department.js"></script>
+        <script src="../../model/object/user.js"></script>
+
+        <script src="../../model/data/constants.js"></script>
+        <script src="../../model/data/users.js"></script>
+
+        <script src="../../model/editor/department.js"></script>
+
+        <!--Controller scripts-->
+        <script src="../../controller/generator/editor.js"></script>
+        <script src="../../controller/generator/helpbox.js"></script>
+        <script src="../../controller/generator/list.js"></script>
+        <script src="../../controller/generator/navigation.js"></script>
+        <script src="../../controller/generator/select.js"></script>
+        <script src="../../controller/validation_check.js"></script>
+    </head>
+
+    <body onload="initializeDepartmentEditor();">
+        <section class="MenuColumn" id="EditorMenu"></section>          <!--The panel on the left of the window featuring the Section Directory, Actions and Management Directory-->
+
+        <main class="Editor">                                       <!--The panel on the right of the window featuring the form with the Sections-->
+            <hgroup>
+                <h1>Company Project Management</h1>
+                <h2>Department Editor</h2>    
+            </hgroup>
+
+            <form id="EditorForm">
+
+                <section id="EditorGeneral">                            <!--The section element featuring the General Attributes-->
+                    <table>
+                        <caption>General Attributes</caption>
+                        <tbody>
+                            <tr><th>Name        </th>   <td><input      id="DepartmentEditorGeneralNameID"   type="text"></td>   </tr>
+                            <tr><th>Description </th>   <td><textarea   id="DepartmentEditorGeneralDescriptionID" rows="10"></textarea></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="EditorMembers" style="display: none;">     <!--The section element featuring the Pictures attributes-->
+                    <span id="DepartmentEditorMembersCountID">There are currently no members</span>
+                    <table class="DataTable" id="DepartmentEditorMembersTableID">
+                        <caption>Members</caption>
+                        <thead>
+                            <tr>
+                                <th>Member</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <td><select id="DepartmentEditorMembersMemberID"></select></td>
+                                <td><input id="DepartmentEditorMembersRoleID" placeholder="Enter role..."></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <span class="clickable" id="DepartmentEditorMembersAddID"   >Add Member</span>
+                    <span class="clickable" id="DepartmentEditorMembersRemoveID">Remove Member</span></p>
+                </section>
+
+                <section id="EditorProjectHistory" style="display: none;">     <!--The section element featuring the Project History attributes-->
+                    <span id="DepartmentEditorProjectHistoryCountID">There are currently no projects</span>
+                    <table class="DataTable" id="DepartmentEditorProjectHistoryTableID"></table>    <!--This table is generated with the same code used in the Project Listing page-->
+                </section>
+
+                <section id="EditorMessages" style="display: none;">     <!--The section element featuring the Project History attributes-->
+                    <table class="DataTable" id="DepartmentEditorMessagesListID"></table>
+                </section>
+
+            </form>
+        </main>
+
+    <div style="display: inline-block; position: fixed;">
+        <span class="clickable" id="EditorPreviousButton"   style="display: none;">Previous Section</span>
+        <span class="clickable" id="EditorNextButton"       >Next Section</span></p>
+        <textarea id="helpbox"></textarea>
+    </div>
+
+        <script>
+            var editor      = null;
+            var departmentEditor  = null;
+
+            function initializeDepartmentEditor()
+            {
+                initializeEditor(
+                {
+                    moduleName      : "Department",
+                    navigation      : rootNavigationObject,
+                    sectionNames    : ["General",                       "Members",                          "Project History",                          "Messages"],
+                    focusedIDs      : ["DepartmentEditorGeneralNameID", "DepartmentEditorMembersMemberID",  "DepartmentEditorProjectHistoryCountID",    "DepartmentEditorMessagesListID"],
+                    descriptions        :
+                    [
+                        "No help text yet",
+                        "No help text yet",
+                        "No help text yet",
+                        "No help text yet"
+                    ]
+                });
+            }
+
+            departmentEditor = new DepartmentEditor();            
+        </script>
+    </body>
+</html>

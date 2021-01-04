@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Company Work Order - Editor</title>
+
+        <link rel="stylesheet" href="../../../../style/elements.css">       <!--The CSS file that stores the styles for html elements without a class attribute-->
+        <link rel="stylesheet" href="../../../../style/editor.css">         <!--The CSS file that stores the styles for html elements with the class attribute, Editor-->
+
+        <!-- Due to object dependencies, this order of script statements is required for the code to work-->
+        <script src="../../../../controller/generator/select.js"></script>  <!--    The module that stores the populateSelectFromObjectArray(select, array, valueProperty, displayProperties, filter) function  -->
+        <script src="../../../../model/object/user.js"></script>            <!--    The module that stores the User class, which is used to construct User objects  -->
+        <script src="../../model/object/work_order.js"></script>            <!--    The module that stores the WorkOrder class, which is used to construct WorkOrder objects   -->
+        <script src="../../../../model/data/users.js"></script>             <!--    The module that stores the array of User objects used across this application, such as the Assign To Employee select element in this document   -->
+        <script src="../../controller/work_order.js"></script>
+        <script src="../../model/data/work_orders.js"></script>             <!--    The module that stores the array of WorkOrder objects used across this application, such as the purpose of this document    -->
+   </head>
+
+    <body onload="initializeWorkOrderFields(['WorkOrderNumber', 'WorkOrderDate', 'WorkOrderRequestedBy', 'WorkOrderPriority', 'WorkOrderDueDate', 'WorkOrderDueTime', 'WorkOrderAssignedTo', 'WorkOrderAttachment', 'WorkOrderDescription']);">
+        <h1>Facilities Work Order</h1>
+
+        <main class="Editor">
+            <form id="WorkOrderForm">
+                <table>
+                    <tr><th><label>Order Number                                         </label>    </th>   <td colspan="2"><input type="text"  id="WorkOrderNumber" disabled style="width: 100%;"></td></tr>
+                    <tr><th><label>Order Date                                           </label>    </th>   <td colspan="2"><input type="text"  id="WorkOrderDate" disabled style="width: 100%;"></td></tr>
+
+                    <!--The should be a gap here to replicate the look of the original form-->
+                    <tr><th><label for="WorkOrderRequestedBy">Work Order Requested By       </label>    </th>   <td colspan="2"><input type="text"  id="WorkOrderRequestedBy" style="width: 100%;"></td></tr>
+                    <tr><th><label for="WorkOrderPriority">Priority                     </label>    </th>   <td colspan="2">
+                        <select id="WorkOrderPriority" onchange="updateDueDate();">
+                            <option value="5">5 - To be completed anytime after the week</option>
+                            <option value="4">4 - To be completed by the end of the week</option>
+                            <option value="3">3 - To be completed by the end of the day</option>
+                            <option value="2">2 - To be completed after current task</option>
+                            <option value="1">1 - To be completed before any other tasks</option>
+                        </select></td></tr>
+                    <tr><th rowspan="2"><label for="WorkOrderDueDate">To Be Completed By</label>    </th>   <td><input type="date"  id="WorkOrderDueDate"></td></tr>
+                    <tr>                                                                                    <td><input type="time"  id="WorkOrderDueTime"></td>
+                        <th><label for="WorkOrderAssignedTo">Assigned To Employee       </label>    </th>   <td><select             id="WorkOrderAssignedTo"></select></td></tr>
+                    <tr><th><label for="WorkOrderAttachment">Attachments                </label>    </th>   <td><input type="file"  id="WorkOrderAttachment"></td></tr>
+
+                    <!--The should be a gap here to replicate the look of the original form-->
+                    <tr><th><label for="WorkOrderDescription">Project Description           </label>    </th>   </tr>
+                    <tr><td colspan="4"><textarea id="WorkOrderDescription" rows="15" style="width: 100%;" placeholder='Enter a description such as "All mesh covers need to be removed from the greenhouse heater intakes."'></textarea></td></tr>
+                </table>
+
+                <!-- We want the reset and submit functions to proceed an intermediate function to take care of a few tasks before hand -->
+                <button onclick="resetForm();">Reset Form</button>  <!--    Call the reset() function of the form element, then update Order Date and Order Number  -->
+                <button onclick="submitForm();">Submit</button>     <!--    The Order number needs to be the exact value of the length of the workOrders array at the moment of submission, otherwise more than 1 WorkOrder object will share the same ID if another user submitted a Work Order recently   -->
+                <a href="../../view/index.html" style="display: block; margin: 20px; font-size: xx-large;">Back</a>
+            </form>
+        </main>
+    </body>
+</html>

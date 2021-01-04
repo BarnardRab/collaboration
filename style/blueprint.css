@@ -1,0 +1,100 @@
+canvas
+{
+    border: 1px solid black;
+}
+
+.executeToolButton
+{
+    background-color: cadetblue;
+    border-color: yellow;
+    border-style: groove;
+    border-radius: 20px;
+    width: auto;
+    float: right;
+}
+
+#control li
+{
+    list-style: none;
+    cursor: pointer;
+}
+
+#control li ul
+{
+    display: none;
+    background: olivedrab;
+}
+
+#control:hover ul
+{
+    display: block;
+    position: absolute;
+    z-index: 10;
+}
+
+#editorMenu             /*  Represents the top level UL element of the menu bar */
+{
+    float: left;
+    position: absolute;
+    width: 100%;
+}
+
+
+#editorMenu li          /*     Represents each main menu of the menu bar */
+{
+    padding: 10px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 30px;
+    color: blue;
+    background-color: red;
+/*    display: inline-block;    */
+    display: inline-flex;
+}
+
+#editorMenu li:hover    /*     Event handler for when the mouse hovers over each main menu of the menu bar, effecting the menu label itself */
+{
+    background-color: rgb(235, 14, 106);
+}
+
+#editorMenu li div    /**    Formerly #editorMenu li ul li */   /*     Represents the division element that appears under each main menu of the menu bar */
+{
+    display: none;
+    right: 100%;
+    width: 100%;
+}
+
+#editorMenu li div ul li    /**formerly #editorMenu li ul li*/  /*     Represents each list item under the ul element under the div element */
+{
+    font-family: 'Arial Black', Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 16px;
+    display: list-item;
+    list-style: none;
+    width: 10%;
+}
+
+#editorMenu li:hover div /*  Formerly #editorMenu li:hover ul    */ /*     Event handler for when the mouse hovers over each main menu of the menu bar, effecting the divison element under it */
+{
+    left: 0%;
+    top: 100%;
+    position: absolute;
+    display: block;
+}
+
+#editorDiv fieldset
+{
+    left: 50%;
+    top: 30%;
+    position: absolute;
+    width: auto;
+    height: auto;
+}
+
+#editorDiv fieldset table tr td
+{
+    font-size: 12px;
+}
+
+#editorMenu li div ul li:hover  /**    formerly #editorMenu li ul li:hover */
+{
+    background-color: rgb(235, 14, 106);
+}

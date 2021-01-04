@@ -1,0 +1,95 @@
+body
+{
+    background-color:burlywood;
+}
+
+
+.helpbox
+{
+    display: block;
+    width: 100%;
+}
+
+
+.filterList
+{
+    font-size: larger;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: azure;
+}
+
+.filterList ul
+{
+    list-style: none;
+}
+
+.OverviewList
+{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: italic;
+}
+
+.OverviewDescription
+{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: larger;
+}
+
+.clickable
+{
+    border-radius: 20px;
+    border: palevioletred;
+    border-style: groove;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: x-large;
+    background-color: aquamarine;
+}
+
+.clickable:hover
+{
+    background-color: burlywood;
+}
+
+.checklist
+{
+    border-style: groove;
+    padding-bottom: 10px;
+    background-color: aquamarine;
+    cursor: pointer;
+}
+
+.checklist li:hover
+{
+    background-color: burlywood;
+}
+
+summary
+{
+    font-size: x-large;
+    cursor: pointer;
+}
+
+details
+{
+    margin-left: 30px;
+}
+
+.Message
+{
+    border-style: groove;
+    padding: 10px;
+    background-color: aquamarine;
+}
+
+.Message div
+{
+    vertical-align: top;
+}
+
+hgroup
+{
+    text-align: center;
+}

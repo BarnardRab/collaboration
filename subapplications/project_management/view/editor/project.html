@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Company Project Management - Project Editor</title>
+
+        <link rel="stylesheet" href="../../../../style/editor.css">
+        <link rel="stylesheet" href="../../../../style/elements.css">
+        <link rel="stylesheet" href="../../../../style/menu.css">
+        <link rel="stylesheet" href="../../../../style/listing_table.css">
+
+        <!--Model scripts-->
+        <script src="../../model/object/phase.js"></script>
+        <script src="../../model/editor/phase.js"></script>
+        <script src="../../model/object/project.js"></script>
+        <script src="../../model/editor/project.js"></script>
+        <script src="../../../../model/data/constants.js"></script>
+        <script src="../../model/data/constants.js"></script>
+        <script src="../../model/data/projects.js"></script>
+
+        <!--Controller scripts-->
+        <script src="../../../../controller/generator/select.js"></script>
+        <script src="../../../../controller/generator/list.js"></script>
+        <script src="../../../../controller/generator/editor.js"></script>
+        <script src="../../../../controller/generator/helpbox.js"></script>
+        <script src="../../../../controller/generator/navigation.js"></script>
+        <script src="../../../../controller/validation_check.js"></script>
+    </head>
+
+    <body onload="initializeProjectEditor();">
+        <section class="MenuColumn" id="EditorMenu"></section>                      <!--The panel on the left of the window featuring the Section Directory, Actions and Management Directory-->
+
+        <main class="Editor">                                                       <!--The panel on the right of the window featuring the form with the Sections-->
+            <hgroup>
+                <h1>Company Project Management</h1>
+                <h2>Project Editor</h2>    
+            </hgroup>
+
+            <form id="EditorForm">
+
+                <section id="EditorGeneral">                                        <!--The section element featuring the General Attributes-->
+                    <label style="display: block;" onmouseover="document.getElementById('helpbox').value = 'Project / Presets is an autoconfiguration setting determined by the Project Category selected.\n\nTime can be saved while creating frequently started projects of a particular category by reapplying phase settings. \n\nPreset configurations can be overwritten in this editor on a case by case basis by making changes after selecting a Category.';">
+                        <input id="ProjectEditorGeneralPresetsID" type="checkbox">Don't apply preset configurations when a category is selected.
+                    </label>
+
+                    <label style="display: block;" onmouseover="document.getElementById('helpbox').value = 'Project / Make Category marks this project as a category.\n\nIf this checkbox is marked, this project will appear in the Category list of the Project Editor for use with other projects.\n\nWhen this is selected as their category, the list of phases and their requirements, teams, and finance settings as well as notification settings for each phase will be copied over to the new project.\n\nThese settings can be overridden on an individual basis in the new project.';">
+                        <input id="ProjectEditorGeneralMarkCategoryID" type="checkbox">Mark this project as a category.
+                    </label>
+
+                    <table style="display: inline; padding: 10px;">
+                        <caption>General Attributes</caption>
+                        <tbody>
+                            <tr id="ProjectEditorTitleRowID">       <th>Title</th>      <td><input      id="ProjectEditorGeneralTitleID" type="text" style="width: 100%;"></td></tr>
+                            <tr id="ProjectEditorCategoryRowID">    <th>Category</th>   <td><select     id="ProjectEditorGeneralCategoryID"></select></td></tr>
+                            <tr id="ProjectEditorDescriptionRowID"> <th>Description</th><td><textarea   id="ProjectEditorGeneralDescriptionID" rows="10" cols="50" style="width:100%;"></textarea></td></tr>
+                            <tr id="ProjectEditorPriorityRowID">    <th>Priority</th>   <td><select     id="ProjectEditorGeneralPriorityID"></select></td></tr>
+                            <tr id="ProjectEditorLeadRowID">        <th>Lead</th>       <td><select     id="ProjectEditorGeneralLeadID"></select></td></tr>
+                        </tbody>
+                    </table>
+
+                    <table style="display: inline; padding: 10px;">
+                        <caption>Limitation Attributes</caption>
+                        <tbody>
+                            <tr id="ProjectEditorBudgetRowID">         <th>Budget</th>           <td><input      id="ProjectEditorGeneralBudgetID" type="number" min="0" onchange="projectEditor.updateBudgetWarningMax();"></td></tr>
+                            <tr id="ProjectEditorBudgetWarningRowID">  <th>Budget Warning</th>   <td><input      id="ProjectEditorGeneralBudgetWarningID" type="number" min="0"></td></tr>
+                            <tr id="ProjectEditorDueDateRowID">        <th>Due Date</th>         <td><input      id="ProjectEditorGeneralDueDateID" type="date" onchange="projectEditor.updateDateWarningMax();"></td></tr>
+                            <tr id="ProjectEditorDueDateWarningRowID"> <th>Due Date Warning</th> <td><input      id="ProjectEditorGeneralDueDateWarningID" type="date"></td></tr>
+                        </tbody>
+                    </table>
+
+                </section>
+            
+                <section id="EditorProgression" style="display: none;">             <!--The section element featuring the Progression Attributes-->
+                    <h1>Progression</h1>
+                    <div>
+                        <h2>Phase List</h2>
+                        <select id="PhaseEditorMainListID" multiple onchange="projectEditor.updatePhaseFields();"></select>
+                        
+                        <div style="display: inline-block; text-align: center; vertical-align: top;">
+                            <label>Phase Progress:      <progress id="PhaseEditorMainNewPhaseID" value=20 max = 40 style="display: block;"></progress></label>
+                            <label>Project Progress:    <progress id="PhaseEditorMainEditPhaseID" value=10 max = 40 style="display: block;"></progress></label>    
+                        </div>
+
+                        <div>
+                            <span class="clickable"   onclick="projectEditor.addNewPhase();"        >Create new Phase</span>
+                            <span class="clickable"   onclick="projectEditor.editSelectedPhase();"  >Edit selected Phase</span>    
+                        </div>
+                    </div>
+                    
+                    <details open>                              <!--Begin Phase / General-->
+                        <summary>General</summary>
+                        <table style="display: inline; padding:10px;">
+                            <caption>General</caption>
+                            <tbody>
+                                <tr id="PhaseEditorTitleRowID">             <th>Title</th>              <td><input      id="PhaseEditorGeneralTitleID" style="width: 100%;" placeholder="Press Enter in any text field to quickly create and add this Phase to the list with the values specified."></td></tr>
+                                <tr id="PhaseEditorDescriptionRowID">       <th>Description</th>        <td><textarea   id="PhaseEditorGeneralDescriptionID" rows="10" cols="50" style="width:100%;" placeholder="Press Ctrl and Enter in this text area to quickly create and add this Phase to the list with the values specified."></textarea></td></tr>
+                                <tr id="PhaseEditorDateStartedRowID">       <th>Date Started</th>       <td><input      id="PhaseEditorGeneralDateStartedID" disabled></td></tr>
+                                <tr id="PhaseEditorProgressionStatusRowID"> <th>Progression Status</th> <td><select     id="PhaseEditorGeneralProgressionStatusID"></select></td></tr>
+                                <tr id="PhaseEditorPunctualStatusRowID">    <th>Punctuality Status</th> <td><select     id="PhaseEditorGeneralPunctualStatusID"></select></td></tr>
+                                <tr id="PhaseEditorTimeWorkedRowID">        <th>Time Worked</th>        <td><input      id="PhaseEditorGeneralTimeWorkedID" type="number" disabled> Minutes</td></tr>
+                            </tbody>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Requirements</summary>
+                        <input      id="PhaseEditorRequirementsTitleID" placeholder="Requirement Title..." style="vertical-align: top;">
+                        <textarea   id="PhaseEditorRequirementsDescriptionID" placeholder="Requirement Description..."></textarea>
+                        <label style="display: block;">Selected Requirement: <span id="PhaseEditorRequirementsSelectedID">None</span></label><br/>
+                        <span       class="clickable"   id="PhaseEditorRequirementsAddID" onclick="projectEditor.phaseEditor.addRequirement();">Add Requirement</span>
+                        <span       class="clickable"   id="PhaseEditorRequirementsEditID" onclick="projectEditor.phaseEditor.editRequirement();">Edit Selected Requirement</span>
+                        <span       class="clickable"   id="PhaseEditorRequirementsDeleteID" onclick="projectEditor.phaseEditor.deleteRequirement();">Delete Selected Requirement</span>
+                        <h2>Checklist</h2>
+                        <ol         class="checklist"   id="PhaseEditorRequirementsListID">
+
+                        </ol>
+                    </details>
+
+                    <details>                                   <!--Begin Phase / Limitation-->
+                        <summary>Time Attributes</summary>
+                        <table style="display: inline; padding:10px;">
+                            <caption>Time Attributes</caption>
+                            <tbody>
+                                <tr id="PhaseEditorDueDateRowID">   <th>Due Date</th>       <td><input id="PhaseEditorLimitationDueDateID" type="date" onchange="projectEditor.phaseEditor.updateDateWarningMax()"></td></tr>
+                                <tr id="PhaseEditorWarningRowID">   <th>Warning</th>        <td><input id="PhaseEditorLimitationWarningID" type="date"></td></tr>
+                            </tbody>
+                        </table>
+                    </details>
+
+                    <details>                                   <!--Begin Phase / Finance-->
+                        <summary>Finance</summary>
+                    
+                        <table style="display: inline; padding:10px;"">
+                            <caption>Finance</caption>
+                            <tbody>
+                                <tr id="PhaseEditorFinanceBudgetRowID">     <th>Budget</th>     <td><input      id="PhaseEditorFinanceBudgetID" type="number" min="0" onchange="projectEditor.phaseEditor.updateBudgetWarningMax();"></td></tr>
+                                <tr id="PhaseEditorFinanceWarningRowID">    <th>Warning</th>    <td><input      id="PhaseEditorFinanceWarningID" type="number" min="0"></td></tr>
+                                <tr id="PhaseEditorFinanceDescriptionRowID"><th>Description</th><td><textarea   id="PhaseEditorFinanceDescriptionID" rows="10" cols="50" style="width:100%;" placeholder="Press Ctrl and Enter in this textarea to quickly create and add this Phase to the list with the values specified."></textarea></td></tr>
+                                <tr id="PhaseEditorFinanceStatusRowID">     <th>Status</th>     <td><select     id="PhaseEditorFinanceStatusID"></select></td></tr>
+                            </tbody>
+                        </table>
+
+                        <details open>                                                       <!--Begin Phase / Finance / Expenses-->
+                            <summary>Expenses</summary>
+                        
+                            <input id="PhaseEditorFinanceExpenseSearch" type="search" placeholder="Search expenses...">
+                            <span id="PhaseEditorFinanceCostsAccruedID">There are 0 expenses, totaling $0</span>
+                            <label>Phase Budget: <meter id="PhaseEditorFinancePhaseBudget" value=".60" high=".40" form="ProjectEditorForm"></meter></label>
+                            <label>Project Budget: <meter id="PhaseEditorFinancePhaseBudget" value=".60" high=".40" form="ProjectEditorForm"></meter></label>
+            
+                            <table class="DataTable">
+                                <caption>Expenses</caption>
+                                <thead>
+                                    <tr>
+                                        <th name="PhaseEditorFinanceExpenseCostColumn"          >Cost</th>
+                                        <th name="PhaseEditorFinanceExpenseTitleColumn"         >Title</th>
+                                        <th name="PhaseEditorFinanceExpenseDescriptionColumn"   >Description</th>
+                                        <th name="PhaseEditorFinanceExpensePhaseBudgetColumn"   >Phase Budget</th>
+                                        <th name="PhaseEditorFinanceExpenseProjectBudgetColumn" >Project Budget</th>
+                                    </tr>
+                                </thead>
+                            
+                                <tbody id="PhaseEditorFinanceExpensesID">
+                            
+                                </tbody>
+                            
+                                <tfoot>
+                                    <tr>
+                                        <td name="PhaseEditorFinanceExpenseCostColumn"          ><input     id="PhaseEditorFinanceExpenseCostID"         type="number" min="0"></td>
+                                        <td name="PhaseEditorFinanceExpenseTitleColumn"         ><input     id="PhaseEditorFinanceExpenseTitleID"        type="text"></td>
+                                        <td name="PhaseEditorFinanceExpenseDescriptionColumn"   ><textarea  id="PhaseEditorFinanceExpenseDescriptionID"  placeholder="Press Ctrl and Enter to submit new record..." rows="10"></textarea></td>
+                                        <td name="PhaseEditorFinanceExpensePhaseBudgetColumn"   >(Meter bar)</td>
+                                        <td name="PhaseEditorFinanceExpenseProjectBudgetColumn" >(Meter bar)</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <span class="clickable" id="PhaseEditorExpensesCreateID"    onclick="projectEditor.phaseEditor.addExpense();">Create New Expense</span>
+                            <span class="clickable" id="PhaseEditorExpensesEditID"      onclick="projectEditor.phaseEditor.editSelectedExpense();">Edit Selected Expense</span>
+                            <span class="clickable" id="PhaseEditorExpensesDeleteID"    onclick="projectEditor.phaseEditor.deleteSelectedExpense();">Delete Selected Expense</span>
+                            <label style="display: block;">Selected Expense: <span id="PhaseEditorExpensesSelectedID">None</span></label><br/>
+                        </details>      <!--End Phase / Finance / Expenses-->
+                    </details>          <!--End Phase / Finance-->
+
+                    <details id="PhaseEditorTeamID">                            <!--Begin Phase / Team-->
+                        <summary>Team</summary>
+                        <input id="PhaseEditorTeamSearchID" type="search" placeholder="Search team members...">
+                        <span id="PhaseEditorTeamQuantityID">There are no team members associated with this phase.</span>
+
+                        <table class="DataTable">       <!--The table element featuring the Sub Projects table-->
+                            <caption>Team</caption>
+                            <thead>
+                                <tr>
+                                <!--General Attributes-->
+                                    <th name="PhaseEditorTeamMemberColumn"      >Member</th>
+                                    <th name="PhaseEditorTeamRoleColumn"        >Role</th>
+                                    <th name="PhaseEditorTeamDepartmentColumn"  >Department</th>
+                                    <th name="PhaseEditorTeamWageColumn"        >Wage</th>
+                                    <th name="PhaseEditorTeamScheduleColumn"    >Schedule</th>
+                                    <th name="PhaseEditorTeamSupervisorColumn"  >Supervisor</th>
+                                </tr>
+                            </thead>
+        
+                            <tbody id="PhaseEditorTeamTableID"></tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td name="PhaseEditorTeamMemberColumn"      ><select    id="PhaseEditorTeamMemberID"    ></select></td>
+                                    <td name="PhaseEditorTeamRoleColumn"        ><input     id="PhaseEditorTeamRoleID"      type="text"></td>
+                                    <td name="PhaseEditorTeamDepartmentColumn"  ><select    id="PhaseEditorTeamDepartmentID"></select></td>
+                                    <td name="PhaseEditorTeamWageColumn"        ><input     id="PhaseEditorTeamWageID"      type="number" min="0"></td>
+                                    <td name="PhaseEditorTeamScheduleColumn"    ><textarea  id="PhaseEditorTeamScheduleID"  ></textarea></td>
+                                    <td name="PhaseEditorTeamSupervisorColumn"  ><select    id="PhaseEditorTeamSupervisorID"></select></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+                        <span       class="clickable"   id="PhaseEditorTeamMembersAddID" onclick="projectEditor.phaseEditor.addTeamMember();">Add Team Member</span>
+                        <span       class="clickable"   id="PhaseEditorTeamMembersEditID" onclick="projectEditor.phaseEditor.editSelectedTeamMember();">Edit Selected Team Member</span>
+                        <span       class="clickable"   id="PhaseEditorTeamMembersDeleteID" onclick="projectEditor.phaseEditor.deleteSelectedTeamMember();">Delete Selected Team Member</span>
+                        <label style="display: block;">Selected Team Member: <span id="PhaseEditorTeamSelectedID">None</span></label><br/>
+
+                    </details>
+
+                    <details id="PhaseEditorPicturesID">                <!--Begin Phase / Pictures-->
+                        <summary>Pictures</summary>
+                        <input  id="PhaseEditorPicturesSearchID" type="search" placeholder="Search pictures...">
+                        <span   id="PhaseEditorPicturesQuantityID">There are no pictures associated with this phase.</span>
+                        <select id="PhaseEditorPicturesListID" style="display: block;" multiple></select>
+                        <input  id="PhaseEditorPicturesUploadID" type="file">
+                        <span   class="clickable"   id="PhaseEditorTeamMembersAddID" onclick="projectEditor.phaseEditor.removeSelectedPicturesFromPhase();">Remove Selected Pictures from Phase</span>
+                        <span   class="clickable"   id="PhaseEditorTeamMembersEditID" onclick="projectEditor.phaseEditor.removeSelectedPicturesFromApplication();">Remove Selected Pictures from Application</span>
+
+                        <div id="PhaseEditorPicturesLayoutID"></tbody>
+
+                    </details>
+
+                    <details id="PhaseEditorBlueprintsID">                <!--Begin Phase / Blueprints-->
+                        <summary>Blueprints</summary>
+                        <input  id="PhaseEditorBlueprintsSearchID" type="search" placeholder="Search blueprints...">
+                        <span   id="PhaseEditorBlueprintsQuantityID">There are no blueprints associated with this phase.</span>
+                        <select id="PhaseEditorBlueprintsListID" style="display: block;" multiple></select>
+                        <input  id="PhaseEditorBlueprintsUploadID" type="file">
+                        <div    id="PhaseEditorBlueprintsLayoutID"></tbody>
+                    </details>
+
+                    <details>                                                                   <!--Begin Message Board-->
+                        <summary>Message Board</summary>
+                        <input type="search" id="PhaseEditorMessagesSearchID" placeholder="Search messages...">
+                        <span id="PhaseEditorMessagesQuantityID">No messages posted yet. When messages are posted, the most recent ones will appear here first.</span>
+
+                        <div>
+                            <table style="display: inline-block; padding: 10px;">
+                                <caption>New Message</caption>
+                                <tbody>
+                                    <tr id="PhaseEditorMessagesIDRowID">            <th>ID</th>         <td><input      id="PhaseEditorMessagesIdID" type="text" disabled></td></tr>
+                                    <tr id="PhaseEditorMessagesAuthorRowID">        <th>Author</th>     <td><input      id="PhaseEditorMessagesAuthorID" type="text" style="width: 100%;" value="Test Author" disabled></td></tr>
+                                    <tr id="PhaseEditorMessagesSubjectRowID">       <th>Subject</th>    <td><input      id="PhaseEditorMessagesSubjectID" type="text" style="width: 100%;"></td></tr>
+                                    <tr id="PhaseEditorMessagesDateRowID">          <th>Date</th>       <td><input      id="PhaseEditorMessagesDateID" disabled></td></tr>
+                                    <tr id="PhaseEditorMessagesCategoryRowID">      <th>Category</th>   <td><select     id="PhaseEditorMessagesCategoryID" ></select></td></tr>
+                                    <tr id="PhaseEditorMessagesPhaseRowID">         <th>Phase</th>      <td><input      id="PhaseEditorMessagesPhaseID" value="Test Phase" disabled></td></tr>
+                                </tbody>
+                            </table>
+
+                            <div style="display: inline-block; vertical-align: top; padding: 10px;">
+                                <h2>Associated Departments</h2>
+                                <select     id="PhaseEditorMessagesDepartmentsID" multiple size=10></select>
+                            </div>
+
+                            <textarea id="PhaseEditorMessagesMessageID" rows="10" cols="50" placeholder="Enter message here..."></textarea>
+                            <hr>
+
+                            <span class="clickable" id="PhaseEditorMessagesAddID"       onclick="projectEditor.phaseEditor.addMessage();">Create New Message</span>
+                            <span class="clickable" id="PhaseEditorMessagesEditID"      onclick="projectEditor.phaseEditor.editSelectedMessage();">Edit Selected Message</span>
+                            <span class="clickable" id="PhaseEditorMessagesDeleteID"    onclick="projectEditor.phaseEditor.deleteSelectedMessage();">Delete Selected Message</span>
+                            <label style="display: block;">Selected Message: <span id="PhaseEditorMessagesSelectedID">None</span></label><br/>
+
+                            <div id="PhaseEditorMessagesListID"></div>
+                        </div>
+                    </details>
+                </section>
+
+                <section id="EditorSubProjects" style="display: none;">
+                    <h1>Project Tree</h1>
+                    <ul>
+                        <li>This Project
+                            <ol id="ProjectEditorSubProjectsTreeID">
+
+                            </ol>
+                        </li>
+                    </ul>
+                
+                    <input type="search" id="ProjectEditorSubProjectsSearchID" placeholder="Search sub-projects...">
+                    <table class="DataTable">       <!--The table element featuring the Sub Projects table-->
+                        <caption>Sub Projects</caption>
+                        <thead>
+                            <tr>
+                            <!--General Attributes-->
+                                <th name="ProjectEditorSubProjectsTitleColumn"           >Title</th>
+                                <th name="ProjectEditorSubProjectsCategoryColumn"        >Category</th>
+                                <th name="ProjectEditorSubProjectsDescriptionColumn"     >Description</th>
+                                <th name="ProjectEditorSubProjectsBudgetColumn"          >Budget</th>
+                                <th name="ProjectEditorSubProjectsBudgetWarningColumn"   >Budget Warning</th>
+                                <th name="ProjectEditorSubProjectsDueDateColumn"         >Due Date</th>
+                                <th name="ProjectEditorSubProjectsDueDateWarningColumn"  >Due Date Warning</th>
+                                <th name="ProjectEditorSubProjectsPriorityColumn"        >Priority</th>
+                                <th name="ProjectEditorSubProjectsLeadColumn"            >Lead</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="ProjectEditorSubProjectsTableBodyID">
+                            <tr>
+                                <td name="ProjectEditorSubProjectsTitleColumn">          <input      id="ProjectEditorSubProjectsTitleID"            onkeypress="createNewProject(event);"           type="text"></td>
+                                <td name="ProjectEditorSubProjectsCategoryColumn">       <select     id="ProjectEditorSubProjectsCategoryID"         onkeypress="createNewProject(event);"></select></td>
+                                <td name="ProjectEditorSubProjectsDescriptionColumn">    <textarea   id="ProjectEditorSubProjectsDescriptionID"      onkeypress="createNewProject(event, 'Description');"   placeholder="Press Ctrl and Enter to submit new description..." rows="10"></textarea></td>
+                                <td name="ProjectEditorSubProjectsBudgetColumn">         <input      id="ProjectEditorSubProjectsBudgetID"           onkeypress="createNewProject(event);"                  type="number" min="0"></td>
+                                <td name="ProjectEditorSubProjectsBudgetWarningColumn">  <input      id="ProjectEditorSubProjectsBudgetWarningID"    onkeypress="createNewProject(event);"                  type="number" min="0"></td>
+                                <td name="ProjectEditorSubProjectsDueDateColumn">        <input      id="ProjectEditorSubProjectsDueDateID"          onkeypress="createNewProject(event);"                  type="date"></td>
+                                <td name="ProjectEditorSubProjectsDueDateWarningColumn"> <input      id="ProjectEditorSubProjectsDueDateWarningID"   onkeypress="createNewProject(event);"                  type="date"></td>
+                                <td name="ProjectEditorSubProjectsPriorityColumn">       <select     id="ProjectEditorSubProjectsPriorityID"         onkeypress="createNewProject(event);"></select></td>
+                                <td name="ProjectEditorSubProjectsLeadColumn">           <select     id="ProjectEditorSubProjectsLeadID"             onkeypress="createNewProject(event);"></select></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <span class="clickable" id="ProjectEditorSubProjectsAddID" onclick="projectEditor.addExistingSubproject();" >Add existing Sub-Project</span>
+                    <span class="clickable" id="ProjectEditorSubProjectsCreateID" onclick="projectEditor.createNewSubproject();">Create new Sub-Project</span>
+                    <span class="clickable" id="ProjectEditorSubProjectsEditID" onclick="projectEditor.editSelectedSubproject();">Edit selected Sub-Project</span>
+                    <span class="clickable" id="ProjectEditorSubProjectsRemoveID" onclick="projectEditor.removeSelectedSubproject();" >Remove Selected Sub-Project</span>
+                    <span class="clickable" id="ProjectEditorSubProjectsDeleteID" onclick="projectEditor.deleteSelectedSubproject();" >Delete Selected Sub-Project</span>
+
+                </section>
+
+                <section id="EditorPermissions" style="display: none;">
+                    <h1>Permissions</h1>
+                    <input type="text" id="EditorPermissionsDebugField", placeholder="This field is for debugging purposes.">
+                    This section has not been implemented yet.
+                </section>
+            </form>
+        </main>
+
+        <div style="display: inline-block; position: fixed;">
+            <span class="clickable" id="EditorPreviousButton"   style="display: none;">Previous Section</span>
+            <span class="clickable" id="EditorNextButton"       >Next Section</span></p>
+            <textarea id="helpbox"></textarea>
+        </div>
+        
+
+        <script>
+            var editor = null;
+            var projectEditor = null;
+
+            function initializeProjectEditor()
+            {
+//                 initializeEditor('Project',
+//                 ["General", "Progression", "Sub Projects", "Permissions"],
+//                 ["Title", "Title", "Title", "DebugField"],
+//                 [   //  The messages that appear when list items in the Section Directory is hovered over
+// //                "The Overview is a condensed collection of the attributes of the Project Editor.",
+//                 "The General section is an overview of the project as a whole.\\n\\nIt contains parameters that are not restricted to any of the Phases or sub-projects such as total due date, total budget, priority and project leader.",
+//                 "The Progression section is where the multi Phase planning for the project is clarified.\\n\\nIt provides a structure where each Phase has optional parameters such as due date, status, pictures, blueprints, head counts, finance, and message boards.\\n\\nIn the message board, any user can touch base with other members of the team on issues such as progress reports and setbacks regarding the selected Phase of the project.",
+//                 "Sub-projects are independent projects that are associated with this project, but may involve a different supervisor from another department.\\n\\nSub projects allow teams to coordinate hierachies of projects\\n\\nEach list item element of the ordered list element represents a sub-project. Clicking an element activates it for editing, viewing or deleting.\\n\\nPlans for a nested tree to illustrate project hierachy is considered, but not a priority at the moment. When that is eventually implemented, any sub-projects that have sub-projects of their own will be represented by list elements within ListItem elements.",
+//                 "Permissions determine what the user can do or see. Permissions are applied to users, departments and teams"
+//                 ]);
+
+                initializeEditor(
+                {
+                    moduleName      : "Project",
+                    navigation      : projectManagementNavigationObject,
+                    sectionNames    : ["General", "Progression", "Sub Projects", "Permissions"],
+                    focusedIDs      : ["ProjectEditorGeneralTitleID", "PhaseEditorGeneralTitleID", "ProjectEditorSubProjectsTitleID", "EditorPermissionsDebugField"],
+                    descriptions    :
+                    [
+                        "The General section is an overview of the project as a whole.\\n\\nIt contains parameters that are not restricted to any of the Phases or sub-projects such as total due date, total budget, priority and project leader.",
+                        "The Progression section is where the multi Phase planning for the project is clarified.\\n\\nIt provides a structure where each Phase has optional parameters such as due date, status, pictures, blueprints, head counts, finance, and message boards.\\n\\nIn the message board, any user can touch base with other members of the team on issues such as progress reports and setbacks regarding the selected Phase of the project.",
+                        "Sub-projects are independent projects that are associated with this project, but may involve a different supervisor from another department.\\n\\nSub projects allow teams to coordinate hierachies of projects\\n\\nEach list item element of the ordered list element represents a sub-project. Clicking an element activates it for editing, viewing or deleting.\\n\\nPlans for a nested tree to illustrate project hierachy is considered, but not a priority at the moment. When that is eventually implemented, any sub-projects that have sub-projects of their own will be represented by list elements within ListItem elements.",
+                        "Permissions determine what the user can do or see. Permissions are applied to users, departments and teams"
+                    ]
+                });
+
+                projectEditor = new ProjectEditor();
+                document.getElementById("PhaseEditorMessagesIdID").value            = messages.length;  //  Set the message value to the length of the messages array
+                document.getElementById("PhaseEditorGeneralDateStartedID").value    = new Date();       //  Set the date field of the General section of the Phase to now 
+                document.getElementById("PhaseEditorMessagesDateID").value          = new Date();       //  Set the date field of the Message section of the Phase to now
+            }
+
+
+        </script>
+    </body>
+</html>

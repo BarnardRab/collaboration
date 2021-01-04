@@ -1,0 +1,39 @@
+/** This class is generally assigned to the <main> element of the viewer pages for Blueprint, Department, Message, Project and User.
+Unlike the Editor class, it is intended for condensed data access because touch screens won't need to be accommodated*/
+.Viewer
+{
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+/** Separated by commas, make elements padded in:
+- The input elements inside the sections that are inside the form
+- The textarea elements inside the sections that are inside the form
+- The select elements inside the sections that are inside the form
+- The input elements inside the tables that are inside the sections that are inside the form
+- The textarea elements inside the tables that are inside the sections that are inside the form
+- The select elements inside the tables that are inside the sections that are inside the form
+*/
+.EditorColumn input,
+.EditorColumn button,
+.EditorColumn textarea,
+.EditorColumn table tbody tr td input,
+.EditorColumn table tbody tr td textarea,
+.EditorColumn table tbody tr td select,
+.EditorColumn section input,
+.EditorColumn section textarea,
+.EditorColumn section select,
+.EditorColumn section details summary,
+.EditorColumn section table tbody tr td input,
+.EditorColumn section table tbody tr td textarea,
+.EditorColumn section table tbody tr td select
+{
+    border-radius: 10px;
+    font-size: large;
+}
+
+/** Prevent the contents of neighboring table cells from touching each other*/
+.EditorColumn form section table tbody tr td
+{
+    
+}

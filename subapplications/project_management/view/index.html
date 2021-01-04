@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Company Project Management</title>
+
+    <link rel="stylesheet" href="../../../style/elements.css">   <!--The CSS file that stores the styles for html elements without a class attribute-->
+    <link rel="stylesheet" href="../../../style/menu.css">
+    <link rel="stylesheet" href="../../../style/main_menu.css">
+
+    <script src="../../../model/data/strings.js"></script>
+
+</head>
+<body>
+    <section class="MenuColumn">
+        <nav>
+            <h2 onmouseover="document.getElementById('helpbox').textContent = homeBlueprint;">Blueprints</h2>
+            <ul>
+                <li onmouseover="document.getElementById('helpbox').textContent = homeBlueprint + listingDescription;"      onclick="location.href='../view/listing/blueprints.html'">List</li>
+                <li onmouseover="document.getElementById('helpbox').textContent = homeBlueprint + viewerDescription;"    onclick="location.href='../view/viewer/blueprint.html'">Viewer</li>
+                <li onmouseover="document.getElementById('helpbox').textContent = homeBlueprint + editorDescription;"    onclick="location.href='../view/editor/blueprint.html'">Editor</li>
+            </ul>
+        </nav>
+
+        <nav>
+            <h2 onmouseover="document.getElementById('helpbox').textContent = homeProject;">Projects</h2>
+            <ul>
+                <li onmouseover="document.getElementById('helpbox').textContent = homeProject + listingDescription;"        onclick="location.href='../view/listing/projects.html'">List</li>
+                <li onmouseover="document.getElementById('helpbox').textContent = homeProject + viewerDescription;"      onclick="location.href='../view/viewer/project.html'">Viewer</li>
+                <li onmouseover="document.getElementById('helpbox').textContent = homeProject + editorDescription;"      onclick="location.href='../view/editor/project.html'">Editor</li>
+            </ul>
+        </nav>
+    </section>
+
+    <main class="MainMenu" style="width: 30%; display: inline-block;">
+        <hgroup>
+            <h1 style="text-align: center;" onmouseover="document.getElementById('helpbox').textContent = 'This application is a work in progress, so some features are not functional yet.'">Company</h1>
+            <h2 style="text-align: center;" onmouseover="document.getElementById('helpbox').textContent = 'This application is a work in progress, so some features are not functional yet.'">Project Management</h2>
+        </hgroup>
+ 
+        <nav>
+            <ul>
+                <li onmouseover="document.getElementById('helpbox').textContent = projectsMessage;"  onclick="location.href='../view/editor/project.html'">Submit new project</li>
+                <li onmouseover="document.getElementById('helpbox').textContent = projectsMessage;" onclick="location.href='../view/viewer/project.html'">View existing project</li>
+                <li onmouseover="document.getElementById('helpbox').textContent = projectsMessage;" onclick="location.href='../view/listing/projects.html'" style="margin-top: 30px;">Go to Administration Panel</li>
+                <li onmouseover="document.getElementById('helpbox').textContent = 'Back to main page';" onclick="location.href='../../../view/index.html'" style="margin-top: 80px;">Central Collaboration Page</li>
+            </ul>
+
+            <span id="helpbox" style="display: block; font-size: larger;"></span>
+        </nav>
+    </main>
+
+        <span class="helpbox" id="helpbox" style="width: 40%;"></span>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Company Collaboration</title>
+        <link rel="stylesheet" href="../style/main_menu.css">
+        <link rel="stylesheet" href="../style/menu.css">
+        <link rel="stylesheet" href="../style/elements.css">
+
+        <script src="../model/data/constants.js"></script>      <!--The file holds the descriptions that appear in the span element with the id helpbox, which updates when the user hovers over an element-->
+    </head>
+
+    <body>
+        <section class="MenuColumn">
+            <nav>
+                <h2 onmouseover="document.getElementById('helpbox').textContent = departmentDescription;">Departments</h2>
+                <ul>
+                    <li onmouseover="document.getElementById('helpbox').textContent = departmentDescription + listingDescription;"  onclick="location.href='../view/listing/departments.html'">Listing</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = departmentDescription + viewerDescription;"   onclick="location.href='../view/viewer/department.html'">Viewer</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = departmentDescription + editorDescription;"   onclick="location.href='../view/editor/department.html'">Editor</li>
+                </ul>
+            </nav>
+
+            <nav>
+                <h2 onmouseover="document.getElementById('helpbox').textContent = messageDescription;">Messages</h2>
+                <ul>
+                    <li onmouseover="document.getElementById('helpbox').textContent = messageDescription + listingDescription;"     onclick="location.href='../view/listing/messages.html'">Listing</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = messageDescription + viewerDescription;"      onclick="location.href='../view/viewer/message.html'">Viewer</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = messageDescription + editorDescription;"      onclick="location.href='../view/editor/message.html'">Editor</li>
+                </ul>
+            </nav>
+
+            <nav>
+                <h2 onmouseover="document.getElementById('helpbox').textContent = UserDescription;">Users</h2>
+                <ul>
+                    <li onmouseover="document.getElementById('helpbox').textContent = UserDescription + listingDescription;"        onclick="location.href='../view/listing/users.html'">Listing</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = UserDescription + viewerDescription;"         onclick="location.href='../view/viewer/user.html'">Viewer</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = UserDescription + editorDescription;"         onclick="location.href='../view/editor/user.html'">Editor</li>
+                </ul>
+            </nav>
+        </section>
+
+        <main class="MainMenu" style="display: inline-block; width: 30%;">
+            <hgroup>
+                <h1 style="text-align: center;" onmouseover="document.getElementById('helpbox').textContent = 'This application is a work in progress, so some features are not functional yet.'">Company</h1>
+                <h2 style="text-align: center;" onmouseover="document.getElementById('helpbox').textContent = 'This application is a work in progress, so some features are not functional yet.'">Collaboration</h2>
+            </hgroup>
+    
+            <ul>
+                <li onmouseover="document.getElementById('helpbox').textContent = projectManagementDescription;"   onclick="location.href='../subapplications/project_management/view/index.html'">Project Management</li>
+                <li onmouseover="document.getElementById('helpbox').textContent = workOrderDescription;"          onclick="location.href='../subapplications/work_order/view/index.html'">Work Orders</li>
+            </ul>
+            
+            <span id="helpbox" style="font-size: larger;"></span>
+            
+        </main>
+
+        <footer>
+            <h1>To Do</h1>
+            <ul>
+                <li>User Login support is not implemented yet. Messages can only be posted as Guest User.</li>
+                <li>When the user clicks a row in any of the listing tables, they should go to the page of that record. Currently, this results in the user going to the editor page of a new record</li>
+            </ul>
+
+            <h1>Known Problems</h1>
+            <ul>
+                <li>The changing sizes of the helpbox text shifts the Menu Column up and down when elements are hovered over. This can be fixed with the css style="float: left;", but this introduces margin discrepencies.</li>
+                <li>The displays of dates take too much table space. Working with dates in JavaScript is a pain.</li>
+                <li>Filter is currently broken</li>
+                <li>The angled table headers are useful for conserving screen space without the confusion of abbreviations, but the edges partially cover the top row, making it difficult to click the first record.</li>
+                <li>When adding a new record to any of the listing pages, the cell widths will automatically adjust based on the contents.</li>
+                <li>The generateListingFunction(listingContents, listingTable) is intended to populate the listing pages of various record types such as Users, Projects and Work Orders with a table, navigation pane on the left and a create / filter section in that pane. The following problems exist regarding that:
+                    <ul>
+                        <li>The function fails on the statement menu.appendChild(navigation);</li>
+                        <li>The navigation argument is generated by the statement: navigation = generateNavigation(listingContents.navigation)</li>
+                        <li>For the example of the work orders listing, the argument, listingContents, is passed to the function generateListingPage(listingContents, listingTable) in the ../../view/listing/work_orders.html page</li>
+                        <li>Navigation is defined by the statement: let navigation = {header: "Work Order Directory", links : [{item: "home", location: "../index.html", description: "Back to the landing page of the work order system"}]}</li>
+                        <li>Navigation is added to the listingContents object in the statement: let listingContents = {idPrefix: "WorkOrder", focusedID: "WorkOrderRequested ByFooter", navigation: navigation};</li>
+                    </ul>
+                </li>
+            </ul>
+        </footer>
+    </body>
+</html>

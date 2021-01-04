@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <title>Company - Work Order Listing</title>
+
+        <link rel="stylesheet" href="../../../../style/editor.css">         <!--The CSS file that stores the styles for html elements with the class attribute, Editor-->
+        <link rel="stylesheet" href="../../../../style/elements.css">       <!--The CSS file that stores the styles for html elements without a class attribute-->
+        <link rel="stylesheet" href="../../../../style/listing_table.css">  <!--The CSS file that stores the styles for html elements with the class attribute, Listing-->
+        <link rel="stylesheet" href="../../../../style/menu.css">
+
+        <!--Model scripts-->
+        <script src="../../model/data/constants.js"></script>
+        <script src="../../model/object/work_order.js"></script>            <!--    The module that stores the WorkOrder class, which is used to construct WorkOrder objects   -->
+        <script src="../../../../model/object/user.js"></script>            <!--    The module that stores the User class, which is used to construct User objects  -->
+        <script src="../../../../controller/generator/listing.js"></script>
+        <script src="../../../../model/data/users.js"></script>             <!--    The module that stores the array of User objects used across this application, such as the Assign To Employee select element in this document   -->
+        <script src="../../../../model/object/listing_table.js"></script>
+        <!--Controller scripts-->
+        <script src="../../../../controller/generator/helpbox.js"></script>
+        <script src="../../../../controller/generator/navigation.js"></script>
+        <script src="../../../../controller/generator/list.js"></script>
+        <script src="../../../../controller/generator/navigation.js"></script>
+        <script src="../../../../controller/validation_check.js"></script>
+        <script src="../../../../controller/generator/select.js"></script>
+        <script src="../../controller/work_order.js"></script>
+        <script src="../../controller/object/work_order.js"></script>
+
+        <!--Data source module-->
+        <script src="../../model/data/work_orders.js"></script>             <!--    The module that stores the array of WorkOrder objects used across this application, such as the purpose of this document    -->
+    </head>
+
+    <body onload="initializeWorkOrderList();">
+        <hgroup>
+            <h1>Company</h1>
+            <h2>Work Order Listing</h2>
+        </hgroup>
+
+        <div style="float: right;">
+            <textarea id="helpbox"></textarea>
+        </div>
+
+        <div class="MenuColumn" id="WorkOrderListingMenu">
+            <div id="WorkOrderListingNew"    ></div>            
+            <div id="WorkOrderTableFilter"   ></div>
+        </div>
+        
+        <main class="Editor">
+                <input id="WorkOrderListingTableSearch" type="search" placeholder="Search WorkOrders...">
+                <span id="WorkOrderListingCount">The are currently no WorkOrders</span>
+                <table class="ListingTable" id="WorkOrderListingTable"></table>        <!--Begin WorkOrder Table element-->
+    
+            <button id="WorkOrderListingNewRecord">Submit Quickset New WorkOrder</button>
+        </main>                                                                  <!--  createNewRecord();  End main element-->
+
+        <script>
+            let workOrderListing = null;
+
+            function initializeWorkOrderList()
+            {
+                let listingContents = {idPrefix: "Work Order", focusedID: "WorkOrderRequested ByFooter", navigation: workOrderNavigationObject, editor : "../editor/work_order.html"};
+                let listingTable    = new ListingTable("WorkOrder", initializeWorkOrderTable("WorkOrderListing"), "../viewer/work_order.html");
+
+                generateListingPage(listingContents, listingTable);
+                initializeWorkOrderFields(['WorkOrderOrderFooter', 'WorkOrderDateFooter', 'WorkOrderRequested ByFooter', 'WorkOrderPriorityFooter', 'WorkOrderDue DateFooter', 'WorkOrderDueTime', 'WorkOrderAssign ToFooter', 'WorkOrderAttachment', 'WorkOrderDescriptionFooter']);
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Company Project Management - Message Editor</title>
+
+        <link rel="stylesheet" href="../../style/editor.css">
+        <link rel="stylesheet" href="../../style/elements.css">
+        <link rel="stylesheet" href="../../style/menu.css">
+        <link rel="stylesheet" href="../../style/listing_table.css">
+
+        <!--Model scripts-->
+        <script src="../../model/object/department.js"></script>
+        <script src="../../model/object/message.js"></script>
+        <script src="../../model/object/user.js"></script>
+
+        <script src="../../model/data/constants.js"></script>
+        <script src="../../model/data/departments.js"></script>
+        <script src="../../model/data/messages.js"></script>
+        <script src="../../model/data/users.js"></script>
+
+        <script src="../../model/editor/message.js"></script>
+
+        <!--Controller scripts-->
+        <script src="../../controller/generator/editor.js"></script>
+        <script src="../../controller/generator/helpbox.js"></script>
+        <script src="../../controller/generator/list.js"></script>
+        <script src="../../controller/generator/navigation.js"></script>
+        <script src="../../controller/generator/select.js"></script>
+        <script src="../../controller/validation_check.js"></script>
+    </head>
+
+    <body onload="initializeMessageEditor();">
+        <section class="MenuColumn" id="EditorMenu"></section>          <!--The panel on the left of the window featuring the Section Directory, Actions and Management Directory-->
+
+        <main class="Editor">                                       <!--The panel on the right of the window featuring the form with the Sections-->
+            <hgroup>
+                <h1>Company Project Management</h1>
+                <h2>Message Editor</h2>    
+            </hgroup>
+
+            <form id="EditorForm">
+
+                <section id="EditorGeneral">                            <!--The section element featuring the General Attributes-->
+                    <table style="display: inline-block; padding: 10px;">
+                        <caption>New Message</caption>
+                        <tbody>
+                            <tr id="MessageEditorGeneralIdRowID">            <th>ID</th>         <td><input      id="MessageEditorGeneralIdID" type="text" disabled></td></tr>
+                            <tr id="MessageEditorGeneralAuthorRowID">        <th>Author</th>     <td><input      id="MessageEditorGeneralAuthorID" type="text" style="width: 100%;" value="Test Author" disabled></td></tr>
+                            <tr id="MessageEditorGeneralSubjectRowID">       <th>Subject</th>    <td><input      id="MessageEditorGeneralSubjectID" type="text" style="width: 100%;"></td></tr>
+                            <tr id="MessageEditorGeneralDateRowID">          <th>Date</th>       <td><input      id="MessageEditorGeneralDateID" disabled></td></tr>
+                            <tr id="MessageEditorGeneralCategoryRowID">      <th>Category</th>   <td><select     id="MessageEditorGeneralCategoryID" ></select></td></tr>
+                        </tbody>
+                    </table>
+
+                    <textarea id="MessageEditorGeneralMessageID" rows="10" cols="50" placeholder="Enter message here..."></textarea>
+
+                    <div id="MessageEditorGeneralListID"></div>
+                </section>
+
+                <section id="EditorAssociations" style="display: none;">     <!--The section element featuring the Pictures attributes-->
+                    <table>
+                        <caption>Associations</caption>
+                        <thead>
+                            <tr>
+                                <th>Blueprints</th>
+                                <th>Pictures</th>
+                                <th>Departments</th>
+                                <th>Projects</th>
+                                <th>Phases</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><select id="MessageEditorAssociationsBlueprintsID"  multiple size=10></select></td>
+                                <td><select id="MessageEditorAssociationsPicturesID"    multiple size=10></select></td>
+                                <td><select id="MessageEditorAssociationsDepartmentsID" multiple size=10></select></td>
+                                <td><select id="MessageEditorAssociationsProjectsID"    multiple size=10></select></td>
+                                <td><select id="MessageEditorAssociationsPhasesID"      multiple size=10></select></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="EditorReplies" style="display: none;">     <!--The section element featuring the Replies -->
+                    <span id="MessageEditorRepliesCountID">There are currently no replies to this message.</span>
+                    <div id="MessageEditorRepliesListID"></div>
+                </section>
+            </form>
+        </main>
+
+    <div style="display: inline-block; position: fixed;">
+        <span class="clickable" id="EditorPreviousButton"   style="display: none;">Previous Section</span>
+        <span class="clickable" id="EditorNextButton"       >Next Section</span></p>
+        <textarea id="helpbox"></textarea>
+    </div>
+
+        <script>
+            var editor      = null;
+            var messageEditor  = null;
+
+            function initializeMessageEditor()
+            {
+                initializeEditor(
+                {
+                    moduleName      : "Message",
+                    navigation      : rootNavigationObject,
+                    sectionNames    : ["General",                       "Associations",                             "Replies"],
+                    focusedIDs      : ["MessageEditorGeneralMessageID", "MessageEditorAssociationsBlueprintsID",    "MessageEditorRepliesCountID"],
+                    descriptions        :
+                    [
+                        "No help text yet",
+                        "No help text yet",
+                        "No help text yet"
+                    ]
+                });
+            }
+
+            messageEditor = new MessageEditor();
+            document.getElementById("MessageEditorGeneralDateID").value = new Date();
+            document.getElementById("MessageEditorGeneralIdID").value = messages.length;
+        </script>
+    </body>
+</html>

@@ -1,0 +1,41 @@
+/** This class is generally assigned to the <main> element of the editor pages for Blueprint, Department, Message, Project and User.
+It is intended for the input and select fields to make them accessible to touch screens*/
+.Editor
+{
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+/** Separated by commas, make elements padded in:
+- The input elements inside the sections that are inside the form
+- The textarea elements inside the sections that are inside the form
+- The select elements inside the sections that are inside the form
+- The input elements inside the tables that are inside the sections that are inside the form
+- The textarea elements inside the tables that are inside the sections that are inside the form
+- The select elements inside the tables that are inside the sections that are inside the form
+*/
+.Editor form input,
+.Editor form button,
+.Editor form textarea,
+.Editor form table tbody tr td input,
+.Editor form table tbody tr td textarea,
+.Editor form table tbody tr td select,
+.Editor form section input,
+.Editor form section textarea,
+.Editor form section select,
+.Editor form section details summary,
+.Editor form section table tbody tr td input,
+.Editor form section table tbody tr td textarea,
+.Editor form section table tbody tr td select
+{
+    padding: 10px;
+    border-radius: 20px;
+    font-size: large;
+}
+
+/** Prevent the contents of neighboring table cells from touching each other*/
+.Editor form section table tbody tr td
+{
+    padding-left: 10px;
+    padding-right: 10px;
+}

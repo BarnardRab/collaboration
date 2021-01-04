@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <title>Company - Project Management</title>
+        <link rel="stylesheet" href="../../../../style/editor.css">
+        <link rel="stylesheet" href="../../../../style/elements.css">
+        <link rel="stylesheet" href="../../../../style/menu.css">
+        <link rel="stylesheet" href="../../../../style/listing_table.css">
+        
+        <!--Model scripts-->
+        <script src="../../../../model/object/listing_table.js"></script>
+        <script src="../../model/object/blueprint.js"></script>
+        <script src="../../model/data/blueprints.js"></script>
+        <script src="../../model/data/constants.js"></script>
+        <!--Controller scripts-->
+        <script src="../../../../controller/generator/helpbox.js"></script>
+        <script src="../../../../controller/generator/list.js"></script>
+        <script src="../../../../controller/generator/listing.js"></script>
+        <script src="../../../../controller/generator/navigation.js"></script>
+        <script src="../../../../controller/validation_check.js"></script>
+        <!--Master module-->
+
+    </head>
+
+    <body onload="initializeBlueprintList();">
+        <div style="float: right;">
+            <textarea id="helpbox"></textarea>
+        </div>
+
+        <section class="MenuColumn" id="BlueprintListingMenu">
+            <div    id="BlueprintListingNew"        ></div>            
+            <div    id="BlueprintTableFilter"       ></div>
+        </section>
+        
+        <main class="Editor">
+            <hgroup>
+                <h1>Company</h1>
+                <h2>Project Management</h2>
+                <h3>Blueprint Listing</h3>
+            </hgroup>
+
+            <input" id="BlueprintListingTableSearch" type="search" placeholder="Search blueprints...">
+            <span id="BlueprintListingCount">The are currently no Blueprints</span>
+            <table class="ListingTable" id="BlueprintListingTable"></table>
+    
+            <button id="BlueprintListingNewRecord">Submit Quickset New Blueprint</button>
+        </main>                                                                  <!--  createNewRecord();  End main element-->
+
+        <script>
+            let blueprintListing = null;
+
+            function initializeBlueprintList()
+            {
+                let listingContents = {idPrefix: "Blueprint", focusedID: "BlueprintNameFooter", navigation: projectManagementNavigationObject, editor: "../editor/blueprint.html"};
+                let listingTable    = new ListingTable("Blueprint", initializeBlueprintTable("BlueprintListing"), "../viewer/blueprint.html");
+
+                generateListingPage(listingContents, listingTable);
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <title>Company - Collaboration</title>
+        <link rel="stylesheet" href="../../style/editor.css">
+        <link rel="stylesheet" href="../../style/elements.css">
+        <link rel="stylesheet" href="../../style/menu.css">
+        <link rel="stylesheet" href="../../style/listing_table.css">
+
+        <!--Model scripts-->
+        <script src="../../model/object/department.js"></script>
+        <script src="../../model/object/listing_table.js"></script>
+        <script src="../../model/object/user.js"></script>
+        <script src="../../model/data/constants.js"></script>               <!--The file holds the descriptions that appear in the textarea element with the id helpbox, which updates when the user hovers over an element-->
+        <script src="../../model/data/users.js"></script>
+        <script src="../../model/data/departments.js"></script>
+
+        <!--Controller scripts-->
+        <script src="../../controller/generator/helpbox.js"></script>
+        <script src="../../controller/generator/list.js"></script>
+        <script src="../../controller/generator/listing.js"></script>
+        <script src="../../controller/generator/navigation.js"></script>
+        <script src="../../controller/generator/select.js"></script>
+        <script src="../../controller/object/department.js"></script>             <!--This file holds the initializeUserTable() function, which passes constants from the constants.js file to a property of the returned object-->
+        <script src="../../controller/validation_check.js"></script>
+
+        <!--Master module-->
+    </head>
+
+    <body onload="initializeDepartmentList();">
+        <div style="float: right;">
+            <textarea id="helpbox"></textarea>
+        </div>
+
+        <div class="MenuColumn" id="DepartmentListingMenu">
+            <div    id="DepartmentListingNew"   ></div>            
+            <div    id="DepartmentTableFilter"  ></div>
+        </div>
+        
+        <main class="Editor">
+            <hgroup>
+                <h1>Company</h1>
+                <h2>Collaboration</h2>
+                <h3>Department Listing</h3>
+            </hgroup>
+
+            <input id="DepartmentListingTableSearch" type="search" placeholder="Search Departments...">
+            <span id="DepartmentListingCount">The are currently no Departments</span>
+            <table class="ListingTable" id="DepartmentListingTable"></table>   <!--Begin Department Table element-->
+
+            <button id="DepartmentListingNewRecord">Submit Quickset New Department</button>
+        </main>                                                                 <!--  createNewRecord();  End main element-->
+
+        <script>
+            function initializeDepartmentList()
+            {
+                let listingContents = {idPrefix: "Department", focusedID: "DepartmentNameFooter", navigation: rootNavigationObject, editor: "../editor/department.html"};
+                let listingTable    = new ListingTable("Department", initializeDepartmentTable("DepartmentListing"), "../viewer/department.html");
+
+                generateListingPage(listingContents, listingTable);
+            }
+        </script>
+    </body>
+</html>

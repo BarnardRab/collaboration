@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Company Work Orders</title>
+        <link rel="stylesheet" href="../../../style/elements.css">
+        <link rel="stylesheet" href="../../../style/main_menu.css">
+    </head>
+
+    <body>
+        <main class="MainMenu" style="width: 50%;">
+            <hgroup>
+                <h1 style="text-align: center;">Company</h1>
+                <h2 style="text-align: center;">Work Order Request</h2>
+            </hgroup>
+    
+            <nav>
+                <ul>
+                    <li onmouseover="document.getElementById('helpbox').textContent = newWorkOrder;"  onclick="location.href='../view/editor/work_order.html'">Submit new work order</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = viewWorkOrder;" onclick="location.href='../view/viewer/work_order.html'">View existing work order</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = administrationPanel;" onclick="location.href='../view/listing/work_orders.html'" style="margin-top: 30px;">Go to Administration Panel</li>
+                    <li onmouseover="document.getElementById('helpbox').textContent = 'Back to main page';" onclick="location.href='../../../view/index.html'" style="margin-top: 80px;">Central Collaboration Page</li>
+                </ul>
+
+                <span id="helpbox" style="display: block; font-size: larger;"></span>
+            </nav>
+        </main>
+
+        <footer>
+            <h1>To Do</h1>
+            <ul>
+                <li>Sample work orders are stored in the ../../model/data/work_orders.js file.</li>
+                <li>There is currently no functionality to handle the submit() function of the form in the "Submit New Order" page. In production, I intend to use Node JS for the server side.</li>
+                <li>There is currently no functionality to handle the attachments field with the input type file element. This is intended to share pictures and documents among the team.</li>
+            </ul>
+
+            <h1>Known Problems</h1>
+            <ul>
+                <li>When loading a Work Order in the Work Order Viewer (accessible by the "View existing work order" link), the table's cells adjust width based on the contents. It would be preferable to make the rows adjust height instead. The solution to the problem lies somewhere in cascading style sheets.</li>
+                <li>See the known problems section of the root page for common problems associated throughout the project.</li>
+                <li>Although functional in the WorkOrder Editor ("Submit new work order" option), the priority select event as mentioned in progress Report bullet 3 won't work in the WorkOrder listing page.</li>
+            </ul>
+
+            <h1>Progress Report</h1>
+            <ul>
+                <li>The pages for the "Submit New Order", "View Existing Order" and "Go to Administration Panel" are created and partially functional.</li>
+                <li>The "Submit New Order" page has its elements for "Order Number", "Order Date" and "Assign To Employee" automatically populated, and selecting a priority automatically adjusts the due date the field's max value.</li>
+                <li>The "View Existing Order" page is allows the user to view existing work orders by enter an order number, and the fields will populate on that record. Although this faces the same problem with all other dynamically populated tables, using the print button fixes this due to constraining the contents to the width of the physical paper.</li>
+            </ul>
+        </footer>
+
+        <script>
+            const newWorkOrder      = "Create a new work order specifying details such as date, requested by, priority, due date, whom it is submitted to and description.\n\nThe status of work orders can be tracked with the tracking number given during their creation.";
+            const viewWorkOrder     = "View an existing work order by the tracking number. The tracking number is displayed during creation of the work order and included in the email.";
+            const administrationPanel = "Log in as a member of the work order team to handle work orders, update their status and notify the client."
+        </script>
+    </body>
+</html>

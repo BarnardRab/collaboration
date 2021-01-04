@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <title>Company - Project Management</title>
+        <link rel="stylesheet" href="../../style/editor.css">
+        <link rel="stylesheet" href="../../style/elements.css">
+        <link rel="stylesheet" href="../../style/menu.css">
+        <link rel="stylesheet" href="../../style/listing_table.css">
+        
+        <!--Model scripts-->
+        <script src="../../model/object/department.js"></script>
+        <script src="../../model/object/listing_table.js"></script>
+        <script src="../../model/object/user.js"></script>
+        <script src="../../model/data/constants.js"></script>               <!--The file holds the descriptions that appear in the textarea element with the id helpbox, which updates when the user hovers over an element-->
+        <script src="../../model/data/users.js"></script>
+        <script src="../../model/data/departments.js"></script>
+
+        <!--Controller scripts-->
+        <script src="../../controller/generator/helpbox.js"></script>
+        <script src="../../controller/generator/list.js"></script>
+        <script src="../../controller/generator/listing.js"></script>
+        <script src="../../controller/generator/navigation.js"></script>
+        <script src="../../controller/generator/select.js"></script>
+        <script src="../../controller/object/user.js"></script>             <!--This file holds the initializeUserTable() function, which passes constants from the constants.js file to a property of the returned object-->
+        <script src="../../controller/validation_check.js"></script>
+    </head>
+
+    <body onload="initializeUserList();">
+
+        <div style="float: right;">
+            <textarea id="helpbox"></textarea>
+        </div>
+
+
+        <div class="MenuColumn" id="UserListingMenu">
+            <div id="UserListingNew"    ></div>            
+            <div id="UserTableFilter"   ></div>
+        </div>
+        
+        <main class="Editor">
+            <hgroup>
+                <h1>Company</h1>
+                <h2>Project Management</h2>
+                <h3>User Listing</h3>
+            </hgroup>
+                
+            <input id="UserListingTableSearch" type="search" placeholder="Search Users...">
+            <span id="UserListingCount">The are currently no Users</span>
+            <table class="ListingTable" id="UserListingTable"></table>        <!--Begin User Table element-->
+    
+            <button id="UserListingNewRecord">Submit Quickset New User</button>
+        </main>                                                                  <!--  createNewRecord();  End main element-->
+
+        <script>
+            function initializeUserList()
+            {
+                let listingContents = {idPrefix: "User", focusedID: "UserUsernameFooter", navigation: rootNavigationObject, editor: "../editor/user.html"};
+                let listingTable    = new ListingTable("User", initializeUserTable("UserListing"), "../viewer/user.html");
+
+                generateListingPage(listingContents, listingTable);
+            }
+        </script>
+    </body>
+</html>

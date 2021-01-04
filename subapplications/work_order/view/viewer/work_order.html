@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Company Work Order - Viewer</title>
+
+        <link rel="stylesheet" href="../../../../style/elements.css">   <!--The CSS file that stores the styles for html elements without a class attribute-->
+        <link rel="stylesheet" href="../../../../style/viewable_table.css">     <!--The CSS file that stores the styles for html elements with the class attribute, ViewableTable-->
+
+        <!-- Due to object dependencies, this order of script statements is required for the code to work-->
+        <script src="../../../../model/object/user.js"></script>    <!--    The module that stores the User class, which is used to construct User objects  -->
+        <script src="../../../../model/data/users.js"></script>     <!--    The module that stores the array of User objects used across this application, such as the Assign To Employee select element in this document   -->
+        <script src="../../model/object/work_order.js"></script>    <!--    The module that stores the WorkOrder class, which is used to construct WorkOrder objects   -->
+        <script src="../../model/data/work_orders.js"></script>     <!--    The module that stores the array of WorkOrder objects used across this application, such as the purpose of this document    -->
+    </head>
+
+    <body>
+        <h1>Facilities Work Order</h1>
+
+        <main class="Viewer">
+            <table class="ViewableTable">
+                <tr>                            <th><label for="WorkOrderNumber">Order Number</label>   </th>   <td><input type="number" id="WorkOrderNumber" placeholder="Enter order number here..." min="0" style="background-color: unset; border-style: unset; font-size: large; width: 300px; cursor: pointer;"></td><td class="DontPrint" colspan="2" rowspan="4"><button onclick="getWorkOrder();">Get Work Order</button><hr><button onclick="print();">Print</button></td></tr>
+                <tr>                            <th>Order Date                                          </th>   <td><span id="WorkOrderDate"></span></td></tr>
+                <tr>                            <th>Work Order Requested By                             </th>   <td><span id="WorkOrderRequestedBy"></span></td></tr>
+                <!--There should be a gap here to replicate the look of the original form-->
+                <tr>                            <th>Priority                                            </th>   <td><span id="WorkOrderPriority"></span></td></tr>
+                <tr>                            <th>To Be Completed By                                  </th>   <td><span id="WorkOrderDueDate"></span></td></tr>
+                <!--The original version of this form had the Assigned to Employee element on the same row, but this did not bode well for printing-->
+                <tr>                            <th>Assigned To Employee                                </th>   <td><span id="WorkOrderAssignedTo"></span></td></tr>
+                <tr>                            <th>Attachments                                         </th>   <td><span id="WorkOrderAttachments"></span></td><td class="DontPrint" colspan="2" rowspan="9"  style="vertical-align: text-top;"><span id="helpbox"></span></td></tr>
+
+                <!--There should be a gap here to replicate the look of the original form-->
+                <tr style="display: block; margin-top: 20px;"><th colspan="2">Project description</th></tr>
+                <tr><td colspan="2"><span id="WorkOrderDescription"></span></td></tr>
+
+                <tr style="display: block; margin-top: 20px;"><th class="SpacedCell" colspan="2">Employee Notes on Task</th></tr>
+                <tr><td colspan="2"><span id="WorkOrderEmployeeNotes"></span></td></tr>
+
+                <!--There should be a gap here to replicate the look of the original form-->
+                <tr>                                                                                    <th>Employee Signature Upon Completion</th><th>Date</th></tr>
+                <tr><td><span id="WorkOrderEmployeeSignature"></span></td><td><span id="WorkOrderEmployeeSignatureDate"></span></td></tr>
+
+                <!--There should be a gap here to replicate the look of the original form-->
+                <tr><th>Supervisor Signature Upon Completion</th><th>Date</th></tr>
+                <tr><td><span id="WorkOrderSupervisorSignature"></span></td><td><span id="WorkOrderSupervisorSignatureDate"></span></td></tr>
+            </table>
+
+                <!--The DontPrint css styling hides this during printing -->
+            <div class="DontPrint">
+                <a href="../../view/index.html" style="display: block; margin: 20px; font-size: xx-large;">Back</a>
+
+        </div>
+    </main>
+
+    <script>
+        let helpbox = document.getElementById("helpbox");
+        
+        function getWorkOrder()
+        {
+            let orderNumber = parseInt(document.getElementById("WorkOrderNumber").value); //  Get the input element for which the user enters the work order number
+
+            //  Validation check to verify that the input element is neither blank nor has a negative number and is a number
+            if (orderNumber == null)
+            {
+                helpbox.textContent = "Work Order number cannot be empty";      //  Notify the user of their error
+                return;                                                         //  Abort execution of the function if this check returned true
+            }
+
+            if (orderNumber < 0)
+            {
+                helpbox.textContent = "Work Order number cannot be less than 0";//  Notify the user of their error
+                return;                                                         //  Abort execution of the function if this check returned true
+            }
+
+            if (isNaN(orderNumber))
+            {
+                helpbox.textContent = "Work Order value must be a number";      //  Notify the user of their error
+                return;                                                         //  Abort execution of the function if this check returned true
+            }
+
+
+            for (let index = 0; index < workOrders.length; index++)             //  Search through the array of WorkOrder objects in data/work_orders.js
+            {
+                let workOrder = workOrders[index];                              //  Shortcut variable to reduce the probability of error
+                if (orderNumber == workOrder.orderNumber)                       //  Compare the Order Number the user entered with the orderNumber property in each WorkOrder object
+                {
+                    populateFields(workOrder);                                  //  Fill out the form fields with the data in the WorkOrder object passed to the parameter
+                    return;                                                     //  Abort execution of the function because the WorkOrder object was found
+                }
+            }
+            
+            //  If a WorkOrder object was not found, notify the user
+            helpbox.textContent = `There are no work orders with the number ${orderNumber}`;
+        }
+
+        /** Fill out the form fields with the data in the WorkOrder object passed to the parameter
+         * @param {WorkOrder}  workOrder */
+        function populateFields(workOrder)
+        {
+            helpbox.textContent = "";                                           //  Clear any error messages because execution of this function means that a WorkOrder object was found
+
+            //      constructor(orderNumber, date, client, priority, dueDate, assignedTo, description)
+
+            let orderDate           = document.getElementById("WorkOrderDate")                  .textContent = workOrder.date;
+            let client              = document.getElementById("WorkOrderRequestedBy")           .textContent = workOrder.client;
+            let priority            = document.getElementById("WorkOrderPriority")              .textContent = workOrder.priority;
+            let dueDate             = document.getElementById("WorkOrderDueDate");
+            
+            if (workOrder.dueDate == null)  dueDate.textContent = "No due date specified";
+            else                            dueDate.textContent = workOrder.dueDate;;
+
+            let assignedTo          = document.getElementById("WorkOrderAssignedTo")            .textContent = `${workOrder.assignedTo.firstName} ${workOrder.assignedTo.lastName}`;
+//            let attachments = document.getElementById("WorkOrderAttachments");
+            let description         = document.getElementById("WorkOrderDescription")           .textContent = workOrder.description;
+            let employeeNotes       = document.getElementById("WorkOrderEmployeeNotes")         .textContent = workOrder.employeeNotes;
+            let employeeSignature   = document.getElementById("WorkOrderEmployeeSignature")     .textContent = workOrder.employeeSignature;
+            let supervisorSignature = document.getElementById("WorkOrderSupervisorSignature")   .textContent = workOrder.supervisorSignature;
+            /*
+
+            <tr><th>Employee Notes on Task</th></tr>
+            <tr><td colspan="2"><span id="WorkOrderEmployeeNotes"></span></td></tr>
+
+            <tr><th>Employee Signature Upon Completion</th><th>Date</th></tr>
+            <tr><td><img id="WorkOrderEmployeeSignature"></img></td><td><span id="WorkOrderEmployeeSignatureDate"></span></td></tr>
+
+            <tr><th>Supervisor Signature Upon Completion</th><th>Date</th></tr>
+            <tr><td><img id="WorkOrderSupervisorSignature"></img></td><td><span id="WorkOrderSupervisorSignatureDate"></span></td></tr>
+
+            */
+        }
+
+
+    </script>
+
+</body>
+</html>

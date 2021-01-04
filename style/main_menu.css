@@ -1,0 +1,27 @@
+.MainMenu
+{
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.MainMenu ul
+{
+    list-style: none;
+    font-size: xx-large;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    cursor: pointer;
+}
+
+.MainMenu ul li
+{
+    padding: 10px;
+    border: moccasin;
+    border-style: groove;
+    margin: 10px;
+}
+
+.MainMenu ul li:hover
+{
+    background-color:aquamarine;
+}

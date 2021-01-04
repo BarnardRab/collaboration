@@ -1,0 +1,40 @@
+.ViewableTable
+{
+    border-collapse: separate;
+}
+
+.ViewableTable tr
+{
+    font-size: large;
+}
+
+.ViewableTable tr td
+{
+    background-color: gainsboro;
+    height: 40px;
+}
+
+.ViewableTable tr td button
+{
+    font-size: x-large;
+    border-radius: 10px;
+}
+
+.ViewableTable tr td button:hover
+{
+    background-color: aquamarine;
+}
+
+.ViewableTable tr th
+{
+    background-color: grey;
+    text-align: left;
+}
+
+@media print
+{
+    .DontPrint
+    {
+        display: none;
+    }
+}

@@ -1,0 +1,73 @@
+.menuRow
+{
+    list-style: none;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 30px;
+    color: blue;
+    background-color: red;
+    cursor: pointer;
+}
+
+.menuRow li
+{
+    display: inline-block;
+    padding: 10px;
+}
+
+
+/*  Not the intended effect.
+.GraphicsSubmenu fieldset
+{
+    vertical-align: top;  
+}
+*/
+
+.GraphicsSubmenu
+{
+    display: inline-flex;
+    width: 230px;
+}
+.GraphicsSubmenu fieldset ul
+{
+    list-style: none;
+    background-color: red;
+    font-size: larger;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    cursor: pointer;
+}
+
+.GraphicsSubmenu fieldset legend
+{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: larger;
+}
+
+.GraphicsSubmenu fieldset ul li
+{
+    padding: 10px;
+    font-weight: bold;
+    color: blue;
+}
+
+.GraphicsSubmenu fieldset ul li:hover, .menuRow li:hover
+{
+    background-color: royalblue;
+}
+
+.GraphicsTool
+{
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+.SVGAttributes
+{
+    background-color: cadetblue;
+}
+
+.SVGAttributes table
+{
+    display: inline-block;
+    padding: 10px;
+    vertical-align: top;
+}

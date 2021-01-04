@@ -1,0 +1,53 @@
+/* The ListingTable is used for records from a database or array*/
+caption
+{
+    font-size: xx-large;
+    font-family: fantasy;
+    border-style: groove;
+}
+
+.ListingTable
+{
+    margin: 10px;
+}
+
+/** Style for the contents of the cells of the table header group*/
+.ListingTable thead tr th
+{
+    transform: rotate(-45deg);
+    height: 100px;
+}
+
+/** Style for the contents of the table body group*/
+.ListingTable tbody
+{
+    padding: 5px;
+    cursor: pointer;
+}
+
+/** Style for the rows of the table body when the mouse hovers over them*/
+.ListingTable tbody tr:hover
+{
+    background-color: cadetblue;
+}
+
+/** Style for the contents of table cells*/
+.ListingTable tbody tr td input
+{
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+/** Style for the table footer group, which is used for data entry to create new objects*/
+.ListingTable tfoot
+{
+    background-color: aquamarine;
+}
+
+.userNotifications
+{
+    width: 100px;
+    font-size: larger;
+    border-radius: 10px;
+}

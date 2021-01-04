@@ -1,0 +1,43 @@
+/** The navigation menu that features the sections for "Section Directory", "Actions", and "Management Directory" in the editors and the sections for the "New", "Filter" and "Management Directory" in the listings*/
+.MenuColumn
+{
+    display: inline-block;
+    padding-right: 10px;
+    vertical-align: text-top;
+    width: 250px;
+}
+
+/*.directoryHeader*/
+.MenuColumn div h1, .MenuColumn nav h1
+{
+    text-align: center;
+}
+
+/*.navigationLinksList*/
+.MenuColumn div ul, .MenuColumn nav ul
+{
+    background-color: aquamarine;
+    font-size: x-large;
+    list-style: none;
+}
+
+.MenuColumn div ul li, nav ul li
+{
+    cursor: pointer;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    padding: 10px;
+}
+
+.MenuColumn div ul li:hover, nav ul li:hover
+{
+    border-radius: 20px;
+    background-color:burlywood;
+}
+
+.navigationLinksList a
+.MenuColumn div ul li a
+{
+    text-decoration: none;
+    list-style: none;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
