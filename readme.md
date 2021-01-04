@@ -1,3 +1,5 @@
+This application provides a data structure for a company's users, departments, message board, projects and workorders.
+
 The structure of the application follows these patterns:
 
 The app.js file is intended to be the launch point of Node JS.
